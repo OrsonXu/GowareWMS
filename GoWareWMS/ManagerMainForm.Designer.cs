@@ -30,7 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dataGridView_client = new System.Windows.Forms.DataGridView();
+            this.dataGridView_manager = new System.Windows.Forms.DataGridView();
             this.button_search = new System.Windows.Forms.Button();
             this.view_label_InvNO = new System.Windows.Forms.Label();
             this.view_textBox_InvNO = new System.Windows.Forms.TextBox();
@@ -42,11 +42,14 @@
             this.dateTimePicker_before = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker_after = new System.Windows.Forms.DateTimePicker();
             this.view_comboBox_category = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButton_history = new System.Windows.Forms.RadioButton();
+            this.radioButton_inventory = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_client)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manager)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -62,8 +65,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.checkedListBox1);
-            this.tabPage1.Controls.Add(this.dataGridView_client);
+            this.tabPage1.Controls.Add(this.dataGridView_manager);
             this.tabPage1.Controls.Add(this.button_search);
             this.tabPage1.Controls.Add(this.view_label_InvNO);
             this.tabPage1.Controls.Add(this.view_textBox_InvNO);
@@ -75,6 +77,7 @@
             this.tabPage1.Controls.Add(this.dateTimePicker_before);
             this.tabPage1.Controls.Add(this.dateTimePicker_after);
             this.tabPage1.Controls.Add(this.view_comboBox_category);
+            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -83,21 +86,21 @@
             this.tabPage1.Text = "View";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // dataGridView_client
+            // dataGridView_manager
             // 
-            this.dataGridView_client.AllowUserToAddRows = false;
-            this.dataGridView_client.AllowUserToDeleteRows = false;
-            this.dataGridView_client.AllowUserToResizeColumns = false;
-            this.dataGridView_client.AllowUserToResizeRows = false;
-            this.dataGridView_client.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView_client.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_client.Location = new System.Drawing.Point(24, 100);
-            this.dataGridView_client.MultiSelect = false;
-            this.dataGridView_client.Name = "dataGridView_client";
-            this.dataGridView_client.ReadOnly = true;
-            this.dataGridView_client.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridView_client.Size = new System.Drawing.Size(654, 236);
-            this.dataGridView_client.TabIndex = 11;
+            this.dataGridView_manager.AllowUserToAddRows = false;
+            this.dataGridView_manager.AllowUserToDeleteRows = false;
+            this.dataGridView_manager.AllowUserToResizeColumns = false;
+            this.dataGridView_manager.AllowUserToResizeRows = false;
+            this.dataGridView_manager.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_manager.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_manager.Location = new System.Drawing.Point(24, 100);
+            this.dataGridView_manager.MultiSelect = false;
+            this.dataGridView_manager.Name = "dataGridView_manager";
+            this.dataGridView_manager.ReadOnly = true;
+            this.dataGridView_manager.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dataGridView_manager.Size = new System.Drawing.Size(654, 236);
+            this.dataGridView_manager.TabIndex = 11;
             // 
             // button_search
             // 
@@ -107,6 +110,7 @@
             this.button_search.TabIndex = 10;
             this.button_search.Text = "Search";
             this.button_search.UseVisualStyleBackColor = true;
+            this.button_search.Click += new System.EventHandler(this.button_search_Click);
             // 
             // view_label_InvNO
             // 
@@ -192,6 +196,44 @@
             this.view_comboBox_category.Size = new System.Drawing.Size(75, 21);
             this.view_comboBox_category.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.groupBox1.Controls.Add(this.radioButton_history);
+            this.groupBox1.Controls.Add(this.radioButton_inventory);
+            this.groupBox1.Location = new System.Drawing.Point(419, 14);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(199, 118);
+            this.groupBox1.TabIndex = 14;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox1_Paint);
+            // 
+            // radioButton_history
+            // 
+            this.radioButton_history.AutoSize = true;
+            this.radioButton_history.Location = new System.Drawing.Point(27, 53);
+            this.radioButton_history.Name = "radioButton_history";
+            this.radioButton_history.Size = new System.Drawing.Size(57, 17);
+            this.radioButton_history.TabIndex = 1;
+            this.radioButton_history.TabStop = true;
+            this.radioButton_history.Text = "History";
+            this.radioButton_history.UseVisualStyleBackColor = true;
+            this.radioButton_history.CheckedChanged += new System.EventHandler(this.radioButton_history_CheckedChanged);
+            // 
+            // radioButton_inventory
+            // 
+            this.radioButton_inventory.AutoSize = true;
+            this.radioButton_inventory.Location = new System.Drawing.Point(27, 30);
+            this.radioButton_inventory.Name = "radioButton_inventory";
+            this.radioButton_inventory.Size = new System.Drawing.Size(69, 17);
+            this.radioButton_inventory.TabIndex = 0;
+            this.radioButton_inventory.TabStop = true;
+            this.radioButton_inventory.Text = "Inventory";
+            this.radioButton_inventory.UseVisualStyleBackColor = true;
+            this.radioButton_inventory.CheckedChanged += new System.EventHandler(this.radioButton_inventory_CheckedChanged);
+            // 
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -201,18 +243,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Manage";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // checkedListBox1
-            // 
-            this.checkedListBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
-            "Inventory",
-            "History"});
-            this.checkedListBox1.Location = new System.Drawing.Point(520, 48);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(74, 30);
-            this.checkedListBox1.TabIndex = 12;
             // 
             // ManagerMainForm
             // 
@@ -227,7 +257,9 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_client)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manager)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -236,7 +268,7 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.DataGridView dataGridView_client;
+        private System.Windows.Forms.DataGridView dataGridView_manager;
         private System.Windows.Forms.Button button_search;
         private System.Windows.Forms.Label view_label_InvNO;
         private System.Windows.Forms.TextBox view_textBox_InvNO;
@@ -249,6 +281,9 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker_after;
         private System.Windows.Forms.ComboBox view_comboBox_category;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton radioButton_history;
+        private System.Windows.Forms.RadioButton radioButton_inventory;
+
     }
 }

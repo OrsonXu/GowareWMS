@@ -12,3 +12,12 @@ C:\Users\orson\Desktop\Junior.autumn ONLY COURSES\Database Concept\Project\GoWar
 C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\bin\Debug\GoWareWMS.exe.config
 C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.exe
 C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.pdb
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\bin\Debug\GoWareWMS.exe
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\bin\Debug\GoWareWMS.pdb
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.csprojResolveAssemblyReference.cache
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.ClientMainForm.resources
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.LogInForm.resources
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.ManagerMainForm.resources
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.Properties.Resources.resources
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.ReceipForm.resources
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.csproj.GenerateResource.Cache

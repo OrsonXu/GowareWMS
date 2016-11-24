@@ -112,19 +112,95 @@ namespace GoWareWMS
 
         private void switchToClientMainForm()
         {
-            Thread.Sleep(2000);
             ClientMainForm clientMainForm = new ClientMainForm(client);
-            //clientMainForm.SetClient();
             clientMainForm.Show();
+            this.Hide();
+        }
+
+        private void btn_manager_login_Click(object sender, EventArgs e)
+        {
+            manager.Username = textBox_username_manager.Text;
+            manager.Password = textBox_pwd_manager.Text;
+            bool logInSucc = false;
+
+            if (manager.Username == "")
+            {
+                MessageBox.Show("Please enter the Username.");
+                logInSucc = false;
+            }
+            else if (!checkText(manager.Username))
+            {
+                MessageBox.Show("Invalid Username.");
+                logInSucc = false;
+            }
+            else if (manager.Password == "")
+            {
+                MessageBox.Show("Please enter the Password.");
+                logInSucc = false;
+            }
+            else
+            {
+                if (db_connect.OpenConnection())
+                {
+                    string mysql_cmd = "SELECT * FROM manager " +
+                        "WHERE (username = \"" + manager.Username + "\"" +
+                        " AND password = \"" + manager.Password + "\");";
+                    MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        if (dataReader["username"].ToString() == manager.Username
+                            && dataReader["password"].ToString() == manager.Password)
+                        {
+                            manager.ID = dataReader["id_manager"].ToString();
+                            manager.Email = dataReader["email"].ToString();
+                            manager.Firstname = dataReader["firstname"].ToString();
+                            manager.Middlename = dataReader["middlename"].ToString();
+                            manager.Lastname = dataReader["lastname"].ToString();
+                            manager.Sex = dataReader["sex"].ToString();
+                            logInSucc = true;
+                            break;
+                        }
+                        else
+                        {
+                            MessageBox.Show("DB Error!");
+                        }
+                    }
+                    if (!logInSucc)
+                    {
+                        MessageBox.Show("The Username or the Password is incorrect");
+                        textBox_pwd_manager.Clear();
+                    }
+                }
+                else
+                {
+                    logInSucc = false;
+                    MessageBox.Show(db_connect.Message);
+                }
+            }
+            if (logInSucc)
+            {
+                switchToManagerMainForm();
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+        }
+
+        public void switchToManagerMainForm()
+        {
+            ManagerMainForm managerMainForm = new ManagerMainForm(manager);
+            managerMainForm.Show();
             this.Hide();
         }
 
         private bool checkText(string text)
         {
-            foreach (char c in text )
-            {   
-                int n = (int) c;
-                if ( ! ((n >= 48 && n <= 57) ||
+            foreach (char c in text)
+            {
+                int n = (int)c;
+                if (!((n >= 48 && n <= 57) ||
                     (n >= 65 && n <= 90) ||
                     (n >= 97 && n <= 122)))
                 {

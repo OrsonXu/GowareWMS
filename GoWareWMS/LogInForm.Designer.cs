@@ -30,6 +30,7 @@
         {
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btn_client_register = new System.Windows.Forms.Button();
             this.title_client = new System.Windows.Forms.Label();
             this.btn_client_login = new System.Windows.Forms.Button();
             this.textBox_pwd_client = new System.Windows.Forms.TextBox();
@@ -37,14 +38,13 @@
             this.label_pwd_client = new System.Windows.Forms.Label();
             this.label_username_client = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btn_manager_register = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_manager_login = new System.Windows.Forms.Button();
-            this.textbox_pwd_manager = new System.Windows.Forms.TextBox();
-            this.textbox_username_manager = new System.Windows.Forms.TextBox();
+            this.textBox_pwd_manager = new System.Windows.Forms.TextBox();
+            this.textBox_username_manager = new System.Windows.Forms.TextBox();
             this.label_pwd_manager = new System.Windows.Forms.Label();
             this.label_username_manager = new System.Windows.Forms.Label();
-            this.btn_client_register = new System.Windows.Forms.Button();
-            this.btn_manager_register = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -78,6 +78,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Client Login";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btn_client_register
+            // 
+            this.btn_client_register.Location = new System.Drawing.Point(271, 201);
+            this.btn_client_register.Name = "btn_client_register";
+            this.btn_client_register.Size = new System.Drawing.Size(87, 23);
+            this.btn_client_register.TabIndex = 6;
+            this.btn_client_register.Text = "Register";
+            this.btn_client_register.UseVisualStyleBackColor = true;
             // 
             // title_client
             // 
@@ -137,8 +146,8 @@
             this.tabPage2.Controls.Add(this.btn_manager_register);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.btn_manager_login);
-            this.tabPage2.Controls.Add(this.textbox_pwd_manager);
-            this.tabPage2.Controls.Add(this.textbox_username_manager);
+            this.tabPage2.Controls.Add(this.textBox_pwd_manager);
+            this.tabPage2.Controls.Add(this.textBox_username_manager);
             this.tabPage2.Controls.Add(this.label_pwd_manager);
             this.tabPage2.Controls.Add(this.label_username_manager);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -148,6 +157,15 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Manager Login";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btn_manager_register
+            // 
+            this.btn_manager_register.Location = new System.Drawing.Point(271, 201);
+            this.btn_manager_register.Name = "btn_manager_register";
+            this.btn_manager_register.Size = new System.Drawing.Size(87, 23);
+            this.btn_manager_register.TabIndex = 6;
+            this.btn_manager_register.Text = "Register";
+            this.btn_manager_register.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -167,21 +185,22 @@
             this.btn_manager_login.TabIndex = 4;
             this.btn_manager_login.Text = "Login";
             this.btn_manager_login.UseVisualStyleBackColor = true;
+            this.btn_manager_login.Click += new System.EventHandler(this.btn_manager_login_Click);
             // 
-            // textbox_pwd_manager
+            // textBox_pwd_manager
             // 
-            this.textbox_pwd_manager.Location = new System.Drawing.Point(257, 115);
-            this.textbox_pwd_manager.Name = "textbox_pwd_manager";
-            this.textbox_pwd_manager.PasswordChar = '*';
-            this.textbox_pwd_manager.Size = new System.Drawing.Size(116, 20);
-            this.textbox_pwd_manager.TabIndex = 3;
+            this.textBox_pwd_manager.Location = new System.Drawing.Point(257, 115);
+            this.textBox_pwd_manager.Name = "textBox_pwd_manager";
+            this.textBox_pwd_manager.PasswordChar = '*';
+            this.textBox_pwd_manager.Size = new System.Drawing.Size(116, 20);
+            this.textBox_pwd_manager.TabIndex = 3;
             // 
-            // textbox_username_manager
+            // textBox_username_manager
             // 
-            this.textbox_username_manager.Location = new System.Drawing.Point(257, 80);
-            this.textbox_username_manager.Name = "textbox_username_manager";
-            this.textbox_username_manager.Size = new System.Drawing.Size(116, 20);
-            this.textbox_username_manager.TabIndex = 2;
+            this.textBox_username_manager.Location = new System.Drawing.Point(257, 80);
+            this.textBox_username_manager.Name = "textBox_username_manager";
+            this.textBox_username_manager.Size = new System.Drawing.Size(116, 20);
+            this.textBox_username_manager.TabIndex = 2;
             // 
             // label_pwd_manager
             // 
@@ -200,24 +219,6 @@
             this.label_username_manager.Size = new System.Drawing.Size(55, 13);
             this.label_username_manager.TabIndex = 0;
             this.label_username_manager.Text = "Username";
-            // 
-            // btn_client_register
-            // 
-            this.btn_client_register.Location = new System.Drawing.Point(271, 201);
-            this.btn_client_register.Name = "btn_client_register";
-            this.btn_client_register.Size = new System.Drawing.Size(87, 23);
-            this.btn_client_register.TabIndex = 6;
-            this.btn_client_register.Text = "Register";
-            this.btn_client_register.UseVisualStyleBackColor = true;
-            // 
-            // btn_manager_register
-            // 
-            this.btn_manager_register.Location = new System.Drawing.Point(271, 201);
-            this.btn_manager_register.Name = "btn_manager_register";
-            this.btn_manager_register.Size = new System.Drawing.Size(87, 23);
-            this.btn_manager_register.TabIndex = 6;
-            this.btn_manager_register.Text = "Register";
-            this.btn_manager_register.UseVisualStyleBackColor = true;
             // 
             // LogInForm
             // 
@@ -245,8 +246,8 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btn_manager_login;
-        private System.Windows.Forms.TextBox textbox_pwd_manager;
-        private System.Windows.Forms.TextBox textbox_username_manager;
+        private System.Windows.Forms.TextBox textBox_pwd_manager;
+        private System.Windows.Forms.TextBox textBox_username_manager;
         private System.Windows.Forms.Label label_pwd_manager;
         private System.Windows.Forms.Label label_username_manager;
         private System.Windows.Forms.Button btn_client_login;

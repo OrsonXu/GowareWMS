@@ -41,7 +41,6 @@ namespace GoWareWMS
             InitializeComponent();
             this.client = client; 
             db_connect = new DBConnect();
-            client = new Client();
 
             dt_warehouse_view = new DataTable();
             dc_warehouse_id_view = new DataColumn("id_warehouse", typeof(int));
@@ -117,7 +116,6 @@ namespace GoWareWMS
         {
             if (db_connect.OpenConnection())
             {
-                dt_warehouse.Clear();
                 string mysql_cmd = "SELECT * FROM warehouse";
                 MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
@@ -145,6 +143,7 @@ namespace GoWareWMS
 
         public void SetComboWarehouseView(DataTable dt_warehouse)
         {
+            dt_warehouse.Clear();
             DataRow row = dt_warehouse.NewRow();
             row[0] = "0";
             row[1] = "All";
@@ -157,6 +156,7 @@ namespace GoWareWMS
 
         public void SetComboWarehouseCheckin(DataTable dt_warehouse)
         {
+            dt_warehouse.Clear();
             SetComboWarehouse(dt_warehouse);
             checkin_comboBox_warehouse.DisplayMember = "name_warehouse";
             checkin_comboBox_warehouse.ValueMember = "id_warehouse";
@@ -167,7 +167,7 @@ namespace GoWareWMS
         {
             if (db_connect.OpenConnection())
             {
-                dt_category.Clear();
+                
                 string mysql_cmd = "SELECT * FROM category";
                 MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
@@ -192,6 +192,7 @@ namespace GoWareWMS
 
         public void SetComboCategoryView(DataTable dt_category)
         {
+            dt_category.Clear();
             DataRow row = dt_category.NewRow();
             row[0] = "0";
             row[1] = "All";
@@ -204,6 +205,7 @@ namespace GoWareWMS
 
         public void SetComboCategoryCheckin(DataTable dt_category)
         {
+            dt_category.Clear();
             SetComboCategory(dt_category);
             checkin_comboBox_category.DisplayMember = "name_category";
             checkin_comboBox_category.ValueMember = "id_category";
