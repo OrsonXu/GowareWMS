@@ -45,11 +45,35 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton_history = new System.Windows.Forms.RadioButton();
             this.radioButton_inventory = new System.Windows.Forms.RadioButton();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radioButton_add = new System.Windows.Forms.RadioButton();
+            this.radioButton_alter = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.radioButton_warehouse = new System.Windows.Forms.RadioButton();
+            this.radioButton_category = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.manage_btn_confirm = new System.Windows.Forms.Button();
+            this.groupBox_add = new System.Windows.Forms.GroupBox();
+            this.label_add_name = new System.Windows.Forms.Label();
+            this.label_add_fee = new System.Windows.Forms.Label();
+            this.textBox_add_name = new System.Windows.Forms.TextBox();
+            this.textBox_add_fee = new System.Windows.Forms.TextBox();
+            this.groupBox_alter = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label_alter_name = new System.Windows.Forms.Label();
+            this.ulabel_current_fee = new System.Windows.Forms.Label();
+            this.label_current_fee = new System.Windows.Forms.Label();
+            this.ulabel_changed_fee = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manager)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox_add.SuspendLayout();
+            this.groupBox_alter.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -234,8 +258,81 @@
             this.radioButton_inventory.UseVisualStyleBackColor = true;
             this.radioButton_inventory.CheckedChanged += new System.EventHandler(this.radioButton_inventory_CheckedChanged);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.Controls.Add(this.radioButton_alter);
+            this.groupBox2.Controls.Add(this.radioButton_add);
+            this.groupBox2.Location = new System.Drawing.Point(30, 110);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(88, 103);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox2_Paint_1);
+            // 
+            // radioButton_add
+            // 
+            this.radioButton_add.AutoSize = true;
+            this.radioButton_add.Location = new System.Drawing.Point(30, 32);
+            this.radioButton_add.Name = "radioButton_add";
+            this.radioButton_add.Size = new System.Drawing.Size(44, 17);
+            this.radioButton_add.TabIndex = 0;
+            this.radioButton_add.TabStop = true;
+            this.radioButton_add.Text = "Add";
+            this.radioButton_add.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_alter
+            // 
+            this.radioButton_alter.AutoSize = true;
+            this.radioButton_alter.Location = new System.Drawing.Point(30, 67);
+            this.radioButton_alter.Name = "radioButton_alter";
+            this.radioButton_alter.Size = new System.Drawing.Size(46, 17);
+            this.radioButton_alter.TabIndex = 1;
+            this.radioButton_alter.TabStop = true;
+            this.radioButton_alter.Text = "Alter";
+            this.radioButton_alter.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.AutoSize = true;
+            this.groupBox3.Controls.Add(this.radioButton_category);
+            this.groupBox3.Controls.Add(this.radioButton_warehouse);
+            this.groupBox3.Location = new System.Drawing.Point(104, 110);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(115, 103);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox3_Paint);
+            // 
+            // radioButton_warehouse
+            // 
+            this.radioButton_warehouse.AutoSize = true;
+            this.radioButton_warehouse.Location = new System.Drawing.Point(29, 32);
+            this.radioButton_warehouse.Name = "radioButton_warehouse";
+            this.radioButton_warehouse.Size = new System.Drawing.Size(80, 17);
+            this.radioButton_warehouse.TabIndex = 0;
+            this.radioButton_warehouse.TabStop = true;
+            this.radioButton_warehouse.Text = "Warehouse";
+            this.radioButton_warehouse.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_category
+            // 
+            this.radioButton_category.AutoSize = true;
+            this.radioButton_category.Location = new System.Drawing.Point(29, 67);
+            this.radioButton_category.Name = "radioButton_category";
+            this.radioButton_category.Size = new System.Drawing.Size(67, 17);
+            this.radioButton_category.TabIndex = 1;
+            this.radioButton_category.TabStop = true;
+            this.radioButton_category.Text = "Category";
+            this.radioButton_category.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox_alter);
+            this.tabPage2.Controls.Add(this.groupBox_add);
+            this.tabPage2.Controls.Add(this.manage_btn_confirm);
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -243,6 +340,128 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Manage";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // manage_btn_confirm
+            // 
+            this.manage_btn_confirm.Location = new System.Drawing.Point(504, 158);
+            this.manage_btn_confirm.Name = "manage_btn_confirm";
+            this.manage_btn_confirm.Size = new System.Drawing.Size(75, 23);
+            this.manage_btn_confirm.TabIndex = 2;
+            this.manage_btn_confirm.Text = "Confirm";
+            this.manage_btn_confirm.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_add
+            // 
+            this.groupBox_add.AutoSize = true;
+            this.groupBox_add.Controls.Add(this.textBox_add_fee);
+            this.groupBox_add.Controls.Add(this.textBox_add_name);
+            this.groupBox_add.Controls.Add(this.label_add_fee);
+            this.groupBox_add.Controls.Add(this.label_add_name);
+            this.groupBox_add.Location = new System.Drawing.Point(250, 53);
+            this.groupBox_add.Name = "groupBox_add";
+            this.groupBox_add.Size = new System.Drawing.Size(200, 82);
+            this.groupBox_add.TabIndex = 3;
+            this.groupBox_add.TabStop = false;
+            this.groupBox_add.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox_add_Paint);
+            // 
+            // label_add_name
+            // 
+            this.label_add_name.AutoSize = true;
+            this.label_add_name.Location = new System.Drawing.Point(26, 20);
+            this.label_add_name.Name = "label_add_name";
+            this.label_add_name.Size = new System.Drawing.Size(41, 13);
+            this.label_add_name.TabIndex = 0;
+            this.label_add_name.Text = "Name :";
+            // 
+            // label_add_fee
+            // 
+            this.label_add_fee.AutoSize = true;
+            this.label_add_fee.Location = new System.Drawing.Point(26, 46);
+            this.label_add_fee.Name = "label_add_fee";
+            this.label_add_fee.Size = new System.Drawing.Size(31, 13);
+            this.label_add_fee.TabIndex = 1;
+            this.label_add_fee.Text = "Fee :";
+            // 
+            // textBox_add_name
+            // 
+            this.textBox_add_name.Location = new System.Drawing.Point(74, 17);
+            this.textBox_add_name.Name = "textBox_add_name";
+            this.textBox_add_name.Size = new System.Drawing.Size(120, 20);
+            this.textBox_add_name.TabIndex = 2;
+            // 
+            // textBox_add_fee
+            // 
+            this.textBox_add_fee.Location = new System.Drawing.Point(74, 43);
+            this.textBox_add_fee.Name = "textBox_add_fee";
+            this.textBox_add_fee.Size = new System.Drawing.Size(120, 20);
+            this.textBox_add_fee.TabIndex = 3;
+            // 
+            // groupBox_alter
+            // 
+            this.groupBox_alter.AutoSize = true;
+            this.groupBox_alter.Controls.Add(this.textBox1);
+            this.groupBox_alter.Controls.Add(this.ulabel_changed_fee);
+            this.groupBox_alter.Controls.Add(this.label_current_fee);
+            this.groupBox_alter.Controls.Add(this.ulabel_current_fee);
+            this.groupBox_alter.Controls.Add(this.label_alter_name);
+            this.groupBox_alter.Controls.Add(this.comboBox1);
+            this.groupBox_alter.Location = new System.Drawing.Point(250, 177);
+            this.groupBox_alter.Name = "groupBox_alter";
+            this.groupBox_alter.Size = new System.Drawing.Size(201, 139);
+            this.groupBox_alter.TabIndex = 4;
+            this.groupBox_alter.TabStop = false;
+            this.groupBox_alter.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox_alter_Paint);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(74, 33);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 0;
+            // 
+            // label_alter_name
+            // 
+            this.label_alter_name.AutoSize = true;
+            this.label_alter_name.Location = new System.Drawing.Point(27, 36);
+            this.label_alter_name.Name = "label_alter_name";
+            this.label_alter_name.Size = new System.Drawing.Size(41, 13);
+            this.label_alter_name.TabIndex = 1;
+            this.label_alter_name.Text = "Name :";
+            // 
+            // ulabel_current_fee
+            // 
+            this.ulabel_current_fee.AutoSize = true;
+            this.ulabel_current_fee.Location = new System.Drawing.Point(26, 60);
+            this.ulabel_current_fee.Name = "ulabel_current_fee";
+            this.ulabel_current_fee.Size = new System.Drawing.Size(41, 26);
+            this.ulabel_current_fee.TabIndex = 2;
+            this.ulabel_current_fee.Text = "Current\r\nFee :";
+            // 
+            // label_current_fee
+            // 
+            this.label_current_fee.AutoSize = true;
+            this.label_current_fee.Location = new System.Drawing.Point(73, 69);
+            this.label_current_fee.Name = "label_current_fee";
+            this.label_current_fee.Size = new System.Drawing.Size(35, 13);
+            this.label_current_fee.TabIndex = 3;
+            this.label_current_fee.Text = "label1";
+            // 
+            // ulabel_changed_fee
+            // 
+            this.ulabel_changed_fee.AutoSize = true;
+            this.ulabel_changed_fee.Location = new System.Drawing.Point(26, 95);
+            this.ulabel_changed_fee.Name = "ulabel_changed_fee";
+            this.ulabel_changed_fee.Size = new System.Drawing.Size(31, 26);
+            this.ulabel_changed_fee.TabIndex = 4;
+            this.ulabel_changed_fee.Text = "New\r\nFee :";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(74, 100);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(120, 20);
+            this.textBox1.TabIndex = 5;
             // 
             // ManagerMainForm
             // 
@@ -260,6 +479,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manager)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.groupBox_add.ResumeLayout(false);
+            this.groupBox_add.PerformLayout();
+            this.groupBox_alter.ResumeLayout(false);
+            this.groupBox_alter.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -280,10 +509,29 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker_before;
         private System.Windows.Forms.DateTimePicker dateTimePicker_after;
         private System.Windows.Forms.ComboBox view_comboBox_category;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButton_history;
         private System.Windows.Forms.RadioButton radioButton_inventory;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton radioButton_category;
+        private System.Windows.Forms.RadioButton radioButton_warehouse;
+        private System.Windows.Forms.RadioButton radioButton_alter;
+        private System.Windows.Forms.RadioButton radioButton_add;
+        private System.Windows.Forms.GroupBox groupBox_add;
+        private System.Windows.Forms.TextBox textBox_add_fee;
+        private System.Windows.Forms.TextBox textBox_add_name;
+        private System.Windows.Forms.Label label_add_fee;
+        private System.Windows.Forms.Label label_add_name;
+        private System.Windows.Forms.Button manage_btn_confirm;
+        private System.Windows.Forms.GroupBox groupBox_alter;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label ulabel_changed_fee;
+        private System.Windows.Forms.Label label_current_fee;
+        private System.Windows.Forms.Label ulabel_current_fee;
+        private System.Windows.Forms.Label label_alter_name;
+        private System.Windows.Forms.ComboBox comboBox1;
 
     }
 }

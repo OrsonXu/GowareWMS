@@ -352,5 +352,25 @@ namespace GoWareWMS
             dateTimePicker_after.Value = DateTime.Today;
             dateTimePicker_before.Value = DateTime.Today;
         }
+
+        private void groupBox2_Paint_1(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+
+        private void groupBox3_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+
+        private void groupBox_add_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+
+        private void groupBox_alter_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
     }
 }
