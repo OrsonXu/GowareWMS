@@ -30,7 +30,8 @@ namespace GoWareWMS
         private string mysql_cmd_search_inventory_basic;
         private string mysql_cmd_search_history_basic;
         private string view_search_option;
-
+        private string manage_option_add_alter;
+        private string manage_option_warehouse_category;
 
         public ManagerMainForm(Manager manager)
         {
@@ -85,6 +86,14 @@ namespace GoWareWMS
             radioButton_inventory.Checked = true;
 
             view_textBox_InvNO.Clear();
+
+            manage_option_add_alter = "add";
+            manage_option_warehouse_category = "category";
+            radioButton_add.Select();
+            radioButton_category.Select();
+            groupBox_add.Visible = true;
+            groupBox_alter.Visible = false;
+            groupBox_add_address.Visible = false;
         }
 
         public void SetDefaultSearch(string mysql_cmd)
@@ -151,7 +160,16 @@ namespace GoWareWMS
             SetComboWarehouse(dt_warehouse);
             view_comboBox_warehouse.DisplayMember = "name_warehouse";
             view_comboBox_warehouse.ValueMember = "id_warehouse";
-            view_comboBox_warehouse.DataSource = dt_warehouse_view;
+            view_comboBox_warehouse.DataSource = dt_warehouse;
+        }
+
+        public void SetComboWarehouseManege(DataTable dt_warehouse)
+        {
+            dt_warehouse.Clear();
+            SetComboWarehouse(dt_warehouse);
+            manage_comboBox.DisplayMember = "name_warehouse";
+            manage_comboBox.ValueMember = "id_warehouse";
+            manage_comboBox.DataSource = dt_warehouse;
         }
 
         private void SetComboCategory(DataTable dt_category)
@@ -190,7 +208,16 @@ namespace GoWareWMS
             SetComboCategory(dt_category);
             view_comboBox_category.DisplayMember = "name_category";
             view_comboBox_category.ValueMember = "id_category";
-            view_comboBox_category.DataSource = dt_category_view;
+            view_comboBox_category.DataSource = dt_category;
+        }
+
+        public void SetComboCategoryManage(DataTable dt_category)
+        {
+            dt_category.Clear();
+            SetComboCategory(dt_category);
+            view_comboBox_category.DisplayMember = "name_category";
+            view_comboBox_category.ValueMember = "id_category";
+            view_comboBox_category.DataSource = dt_category;
         }
 
         private void groupBox1_Paint(object sender, PaintEventArgs e)
@@ -225,7 +252,7 @@ namespace GoWareWMS
             string invNO = view_textBox_InvNO.Text;
             if (invNO != "")
             {
-                if (!checkText(invNO))
+                if (!checkTextAsNO(invNO))
                 {
                     MessageBox.Show("Sorry! The Inv NO you entered is invalid!\n Please make sure all the characters are between 0 - 9!");
                     return;
@@ -332,19 +359,6 @@ namespace GoWareWMS
             }
         }
 
-        private bool checkText(string text)
-        {
-            foreach (char c in text)
-            {
-                int n = (int)c;
-                if (!(n >= 48 && n <= 57))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         private void ResetComboBoxDatePicker()
         {
             view_comboBox_warehouse.Text = "All";
@@ -369,6 +383,121 @@ namespace GoWareWMS
         }
 
         private void groupBox_alter_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+
+        private void radioButton_add_CheckedChanged(object sender, EventArgs e)
+        {
+            manage_option_add_alter = "add";
+            groupBox_add.Visible = true;
+            groupBox_alter.Visible = false;
+        }
+
+        private void radioButton_alter_CheckedChanged(object sender, EventArgs e)
+        {
+            manage_option_add_alter = "alter";
+            groupBox_add.Visible = false;
+            groupBox_alter.Visible = true;
+        }
+
+        private void radioButton_warehouse_CheckedChanged(object sender, EventArgs e)
+        {
+            manage_option_warehouse_category = "warehouse";
+            groupBox_add_address.Visible = true;
+        }
+
+        private void radioButton_category_CheckedChanged(object sender, EventArgs e)
+        {
+            manage_option_warehouse_category = "category";
+            groupBox_add_address.Visible = false;
+        }
+
+        private void manage_btn_confirm_Click(object sender, EventArgs e)
+        {
+            // If the add is selected
+            if (manage_option_add_alter == "add")
+            {
+                string name = textBox_add_name.Text;
+                string fee = textBox_add_fee.Text;
+                if (!checkTextAsCharater(name))
+                {
+                    MessageBox.Show("Sorry, the name you entered is not valid!");
+                    textBox_add_name.Clear();
+                    return;
+                }
+                if (!checkTextAsInt(fee))
+                {
+                    MessageBox.Show("Sorry, the fee you entered has to be integer!");
+                    textBox_add_fee.Clear();
+                    return;
+                }
+                string mysql_cmd = "";
+                // If the warehouse is selected
+                if (manage_option_warehouse_category == "wareshouse")
+                {
+
+                }
+                // If the category is selected
+                else
+                {
+
+                }
+            }
+            // If the alter is selected
+            else
+            {
+                // If the warehouse is selected
+                if (manage_option_warehouse_category == "wareshouse")
+                {
+
+                }
+                // If the category is selected
+                else
+                {
+
+                }
+            }
+
+            
+        }
+
+        private bool checkTextAsNO(string text)
+        {
+            foreach (char c in text)
+            {
+                int n = (int)c;
+                if (!(n >= 48 && n <= 57))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool checkTextAsInt(string text)
+        {
+            return checkTextAsNO(text);
+        }
+
+        private bool checkTextAsCharater(string text)
+        {
+            foreach (char c in text)
+            {
+                int n = (int)c;
+                if (!
+                    ((n >= 48 && n <= 57) 
+                    || (n >= 65 && n <= 90)
+                    || (n >= 97 && n <= 122))
+                    )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void groupBox_add_address_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(Color.White);
         }

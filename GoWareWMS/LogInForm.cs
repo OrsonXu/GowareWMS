@@ -209,5 +209,20 @@ namespace GoWareWMS
             }
             return true;
         }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (tabControl.SelectedIndex)
+            {
+                case 0:
+                    textBox_pwd_client.Clear();
+                    textBox_username_client.Clear();
+                    break;
+                case 1:
+                    textBox_pwd_manager.Clear();
+                    textBox_username_manager.Clear();
+                    break;
+            }
+        }
     }
 }
