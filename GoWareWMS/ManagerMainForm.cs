@@ -436,7 +436,34 @@ namespace GoWareWMS
                 // If the warehouse is selected
                 if (manage_option_warehouse_category == "wareshouse")
                 {
-
+                    string street = textBox_street.Text;
+                    string city = textBox_city.Text;
+                    string country = textBox_country.Text;
+                    string tel = textBox_tel.Text;
+                    if (!checkTextAsCharater(street))
+                    {
+                        MessageBox.Show("Sorry, the street you entered is invalid!");
+                        textBox_street.Clear();
+                        return;
+                    }
+                    if (!checkTextAsCharater(city))
+                    {
+                        MessageBox.Show("Sorry, the city you entered is invalid!");
+                        textBox_city.Clear();
+                        return;
+                    }
+                    if (!checkTextAsCharater(country))
+                    {
+                        MessageBox.Show("Sorry, the country you entered is invalid!");
+                        textBox_country.Clear();
+                        return;
+                    }
+                    if (!checkTextAsTEL(tel))
+                    {
+                        MessageBox.Show("Sorry, the telephone number you entered is invalid!");
+                        textBox_tel.Clear();
+                        return;
+                    }
                 }
                 // If the category is selected
                 else
@@ -490,6 +517,19 @@ namespace GoWareWMS
                     || (n >= 65 && n <= 90)
                     || (n >= 97 && n <= 122))
                     )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool checkTextAsTEL(string text)
+        {
+            foreach (char c in text)
+            {
+                int n = (int)c;
+                if (!((n >= 48 && n <= 57) || n == 45))
                 {
                     return false;
                 }
