@@ -330,7 +330,7 @@ namespace GoWareWMS
             string inventoryID = "";
             string categoryID = checkin_comboBox_category.SelectedValue.ToString();
             string warehouseID = checkin_comboBox_warehouse.SelectedValue.ToString();
-            string repositoryID = DetermineRepositoryID(warehouseID);
+            string repositoryID = DetermineRepositoryID(warehouseID, categoryID);
             if (repositoryID == "") return;
             if (db_connect.OpenConnection())
             {
@@ -369,23 +369,25 @@ namespace GoWareWMS
             ShowReceipt("checkin", "", inventoryID, categoryID, description, warehouseID, "");
         }
 
-        private string DetermineRepositoryID(string warehouseID)
+        private string DetermineRepositoryID(string warehouseID, string categoryID)
         {
             // Create an array of list to store the output of the sql select result
             // to help to decide which repository
-            List<string>[] list = new List<string>[3];
+            List<string>[] list = new List<string>[4];
             list[0] = new List<string>();
             list[1] = new List<string>();
             list[2] = new List<string>();
+            list[3] = new List<string>();
 
             if (db_connect.OpenConnection())
             {
-                string mysql_cmd = "SELECT id_warehouse, id_repository, count(id_inventory) as inventoryCount "
+                string mysql_cmd = "SELECT id_warehouse, id_category, id_repository, count(id_inventory) as inventoryCount "
                                 + "FROM inventory "
-                                + "WHERE id_warehouse = @warehouseID "
-                                + "GROUP BY id_warehouse, id_repository;";
+                                + "WHERE id_warehouse = @warehouseID AND id_category = @categoryID "
+                                + "GROUP BY id_warehouse, id_category, id_repository;";
                 MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                 cmd.Parameters.AddWithValue("@warehouseID", warehouseID);
+                cmd.Parameters.AddWithValue("@categoryID", categoryID);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 while (dataReader.Read())
                 {
@@ -393,7 +395,8 @@ namespace GoWareWMS
                     {
                         list[0].Add(dataReader["id_warehouse"].ToString());
                         list[1].Add(dataReader["id_repository"].ToString());
-                        list[2].Add(dataReader["inventoryCount"].ToString());
+                        list[2].Add(dataReader["id_category"].ToString());
+                        list[3].Add(dataReader["inventoryCount"].ToString());
                     }
                 }
             }
@@ -411,7 +414,7 @@ namespace GoWareWMS
             // Just add a new one
             if (list[0].Count == 0)
             {
-                AddNewRepository(warehouseID, "1");
+                //AddNewRepository(warehouseID, categoryID, "1");
                 return "1";
             }
             else
@@ -419,7 +422,7 @@ namespace GoWareWMS
                 int index = 0;
                 // If there exist any repository whose items is less than 5
                 // Just use the one whose id is as small as possible
-                foreach (string count_str in list[2])
+                foreach (string count_str in list[3])
                 {
                     int count_int = Convert.ToInt32(count_str);
                     if (count_int < 5)
@@ -441,20 +444,21 @@ namespace GoWareWMS
                 }
                 id_repo_max++;
                 string repository = id_repo_max.ToString();
-                AddNewRepository(warehouseID, repository);
+                AddNewRepository(warehouseID, categoryID, repository);
                 return repository;
             }
         }
 
-        private void AddNewRepository(string warehouseID, string repositoryID)
+        private void AddNewRepository(string warehouseID, string categoryID, string repositoryID)
         {
             if (db_connect.OpenConnection())
             {
                 string mysql_cmd = "INSERT INTO `repository` "
-                                + "(`id_warehouse`, `id_repository`) "
-                                + "VALUES (@warehouseID, @repositoryID);";
+                                + "(`id_warehouse`, `id_category`, `id_repository`) "
+                                + "VALUES (@warehouseID, @categoryID, @repositoryID);";
                 MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                 cmd.Parameters.AddWithValue("@warehouseID", warehouseID);
+                cmd.Parameters.AddWithValue("@categoryID", categoryID);
                 cmd.Parameters.AddWithValue("@repositoryID", repositoryID);
                 cmd.ExecuteNonQuery();
             }
