@@ -46,6 +46,15 @@
             this.radioButton_history = new System.Windows.Forms.RadioButton();
             this.radioButton_inventory = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox_add_address = new System.Windows.Forms.GroupBox();
+            this.textBox_tel = new System.Windows.Forms.TextBox();
+            this.label_tel = new System.Windows.Forms.Label();
+            this.label_country = new System.Windows.Forms.Label();
+            this.label_city = new System.Windows.Forms.Label();
+            this.label_street = new System.Windows.Forms.Label();
+            this.textBox_country = new System.Windows.Forms.TextBox();
+            this.textBox_city = new System.Windows.Forms.TextBox();
+            this.textBox_street = new System.Windows.Forms.TextBox();
             this.groupBox_alter = new System.Windows.Forms.GroupBox();
             this.textBox_alter_fee = new System.Windows.Forms.TextBox();
             this.ulabel_changed_fee = new System.Windows.Forms.Label();
@@ -65,25 +74,16 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.radioButton_alter = new System.Windows.Forms.RadioButton();
             this.radioButton_add = new System.Windows.Forms.RadioButton();
-            this.groupBox_add_address = new System.Windows.Forms.GroupBox();
-            this.textBox_street = new System.Windows.Forms.TextBox();
-            this.textBox_city = new System.Windows.Forms.TextBox();
-            this.textBox_country = new System.Windows.Forms.TextBox();
-            this.label_street = new System.Windows.Forms.Label();
-            this.label_city = new System.Windows.Forms.Label();
-            this.label_country = new System.Windows.Forms.Label();
-            this.label_tel = new System.Windows.Forms.Label();
-            this.textBox_tel = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manager)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox_add_address.SuspendLayout();
             this.groupBox_alter.SuspendLayout();
             this.groupBox_add.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox_add_address.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -254,7 +254,6 @@
             this.radioButton_history.TabStop = true;
             this.radioButton_history.Text = "History";
             this.radioButton_history.UseVisualStyleBackColor = true;
-            this.radioButton_history.CheckedChanged += new System.EventHandler(this.radioButton_history_CheckedChanged);
             // 
             // radioButton_inventory
             // 
@@ -266,7 +265,6 @@
             this.radioButton_inventory.TabStop = true;
             this.radioButton_inventory.Text = "Inventory";
             this.radioButton_inventory.UseVisualStyleBackColor = true;
-            this.radioButton_inventory.CheckedChanged += new System.EventHandler(this.radioButton_inventory_CheckedChanged);
             // 
             // tabPage2
             // 
@@ -283,6 +281,87 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Manage";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_add_address
+            // 
+            this.groupBox_add_address.Controls.Add(this.textBox_tel);
+            this.groupBox_add_address.Controls.Add(this.label_tel);
+            this.groupBox_add_address.Controls.Add(this.label_country);
+            this.groupBox_add_address.Controls.Add(this.label_city);
+            this.groupBox_add_address.Controls.Add(this.label_street);
+            this.groupBox_add_address.Controls.Add(this.textBox_country);
+            this.groupBox_add_address.Controls.Add(this.textBox_city);
+            this.groupBox_add_address.Controls.Add(this.textBox_street);
+            this.groupBox_add_address.Location = new System.Drawing.Point(475, 28);
+            this.groupBox_add_address.Name = "groupBox_add_address";
+            this.groupBox_add_address.Size = new System.Drawing.Size(200, 124);
+            this.groupBox_add_address.TabIndex = 5;
+            this.groupBox_add_address.TabStop = false;
+            this.groupBox_add_address.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox_add_address_Paint);
+            // 
+            // textBox_tel
+            // 
+            this.textBox_tel.Location = new System.Drawing.Point(64, 98);
+            this.textBox_tel.Name = "textBox_tel";
+            this.textBox_tel.Size = new System.Drawing.Size(120, 20);
+            this.textBox_tel.TabIndex = 7;
+            // 
+            // label_tel
+            // 
+            this.label_tel.AutoSize = true;
+            this.label_tel.Location = new System.Drawing.Point(9, 101);
+            this.label_tel.Name = "label_tel";
+            this.label_tel.Size = new System.Drawing.Size(33, 13);
+            this.label_tel.TabIndex = 6;
+            this.label_tel.Text = "TEL :";
+            // 
+            // label_country
+            // 
+            this.label_country.AutoSize = true;
+            this.label_country.Location = new System.Drawing.Point(9, 73);
+            this.label_country.Name = "label_country";
+            this.label_country.Size = new System.Drawing.Size(49, 13);
+            this.label_country.TabIndex = 5;
+            this.label_country.Text = "Country :";
+            // 
+            // label_city
+            // 
+            this.label_city.AutoSize = true;
+            this.label_city.Location = new System.Drawing.Point(9, 47);
+            this.label_city.Name = "label_city";
+            this.label_city.Size = new System.Drawing.Size(30, 13);
+            this.label_city.TabIndex = 4;
+            this.label_city.Text = "City :";
+            // 
+            // label_street
+            // 
+            this.label_street.AutoSize = true;
+            this.label_street.Location = new System.Drawing.Point(9, 21);
+            this.label_street.Name = "label_street";
+            this.label_street.Size = new System.Drawing.Size(41, 13);
+            this.label_street.TabIndex = 3;
+            this.label_street.Text = "Street :";
+            // 
+            // textBox_country
+            // 
+            this.textBox_country.Location = new System.Drawing.Point(64, 70);
+            this.textBox_country.Name = "textBox_country";
+            this.textBox_country.Size = new System.Drawing.Size(120, 20);
+            this.textBox_country.TabIndex = 2;
+            // 
+            // textBox_city
+            // 
+            this.textBox_city.Location = new System.Drawing.Point(64, 44);
+            this.textBox_city.Name = "textBox_city";
+            this.textBox_city.Size = new System.Drawing.Size(120, 20);
+            this.textBox_city.TabIndex = 1;
+            // 
+            // textBox_street
+            // 
+            this.textBox_street.Location = new System.Drawing.Point(64, 18);
+            this.textBox_street.Name = "textBox_street";
+            this.textBox_street.Size = new System.Drawing.Size(120, 20);
+            this.textBox_street.TabIndex = 0;
             // 
             // groupBox_alter
             // 
@@ -350,6 +429,7 @@
             this.manage_comboBox.Name = "manage_comboBox";
             this.manage_comboBox.Size = new System.Drawing.Size(121, 21);
             this.manage_comboBox.TabIndex = 0;
+            this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
             // 
             // groupBox_add
             // 
@@ -429,7 +509,7 @@
             this.radioButton_category.TabStop = true;
             this.radioButton_category.Text = "Category";
             this.radioButton_category.UseVisualStyleBackColor = true;
-            this.radioButton_category.CheckedChanged += new System.EventHandler(this.radioButton_category_CheckedChanged);
+            this.radioButton_category.Click += new System.EventHandler(this.radioButton_category_Click);
             // 
             // radioButton_warehouse
             // 
@@ -441,7 +521,7 @@
             this.radioButton_warehouse.TabStop = true;
             this.radioButton_warehouse.Text = "Warehouse";
             this.radioButton_warehouse.UseVisualStyleBackColor = true;
-            this.radioButton_warehouse.CheckedChanged += new System.EventHandler(this.radioButton_warehouse_CheckedChanged);
+            this.radioButton_warehouse.Click += new System.EventHandler(this.radioButton_warehouse_Click);
             // 
             // groupBox2
             // 
@@ -465,7 +545,7 @@
             this.radioButton_alter.TabStop = true;
             this.radioButton_alter.Text = "Alter";
             this.radioButton_alter.UseVisualStyleBackColor = true;
-            this.radioButton_alter.CheckedChanged += new System.EventHandler(this.radioButton_alter_CheckedChanged);
+            this.radioButton_alter.Click += new System.EventHandler(this.radioButton_alter_Click);
             // 
             // radioButton_add
             // 
@@ -477,88 +557,7 @@
             this.radioButton_add.TabStop = true;
             this.radioButton_add.Text = "Add";
             this.radioButton_add.UseVisualStyleBackColor = true;
-            this.radioButton_add.CheckedChanged += new System.EventHandler(this.radioButton_add_CheckedChanged);
-            // 
-            // groupBox_add_address
-            // 
-            this.groupBox_add_address.Controls.Add(this.textBox_tel);
-            this.groupBox_add_address.Controls.Add(this.label_tel);
-            this.groupBox_add_address.Controls.Add(this.label_country);
-            this.groupBox_add_address.Controls.Add(this.label_city);
-            this.groupBox_add_address.Controls.Add(this.label_street);
-            this.groupBox_add_address.Controls.Add(this.textBox_country);
-            this.groupBox_add_address.Controls.Add(this.textBox_city);
-            this.groupBox_add_address.Controls.Add(this.textBox_street);
-            this.groupBox_add_address.Location = new System.Drawing.Point(475, 28);
-            this.groupBox_add_address.Name = "groupBox_add_address";
-            this.groupBox_add_address.Size = new System.Drawing.Size(200, 124);
-            this.groupBox_add_address.TabIndex = 5;
-            this.groupBox_add_address.TabStop = false;
-            this.groupBox_add_address.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox_add_address_Paint);
-            // 
-            // textBox_street
-            // 
-            this.textBox_street.Location = new System.Drawing.Point(64, 18);
-            this.textBox_street.Name = "textBox_street";
-            this.textBox_street.Size = new System.Drawing.Size(120, 20);
-            this.textBox_street.TabIndex = 0;
-            // 
-            // textBox_city
-            // 
-            this.textBox_city.Location = new System.Drawing.Point(64, 44);
-            this.textBox_city.Name = "textBox_city";
-            this.textBox_city.Size = new System.Drawing.Size(120, 20);
-            this.textBox_city.TabIndex = 1;
-            // 
-            // textBox_country
-            // 
-            this.textBox_country.Location = new System.Drawing.Point(64, 70);
-            this.textBox_country.Name = "textBox_country";
-            this.textBox_country.Size = new System.Drawing.Size(120, 20);
-            this.textBox_country.TabIndex = 2;
-            // 
-            // label_street
-            // 
-            this.label_street.AutoSize = true;
-            this.label_street.Location = new System.Drawing.Point(9, 21);
-            this.label_street.Name = "label_street";
-            this.label_street.Size = new System.Drawing.Size(41, 13);
-            this.label_street.TabIndex = 3;
-            this.label_street.Text = "Street :";
-            // 
-            // label_city
-            // 
-            this.label_city.AutoSize = true;
-            this.label_city.Location = new System.Drawing.Point(9, 47);
-            this.label_city.Name = "label_city";
-            this.label_city.Size = new System.Drawing.Size(30, 13);
-            this.label_city.TabIndex = 4;
-            this.label_city.Text = "City :";
-            // 
-            // label_country
-            // 
-            this.label_country.AutoSize = true;
-            this.label_country.Location = new System.Drawing.Point(9, 73);
-            this.label_country.Name = "label_country";
-            this.label_country.Size = new System.Drawing.Size(49, 13);
-            this.label_country.TabIndex = 5;
-            this.label_country.Text = "Country :";
-            // 
-            // label_tel
-            // 
-            this.label_tel.AutoSize = true;
-            this.label_tel.Location = new System.Drawing.Point(9, 101);
-            this.label_tel.Name = "label_tel";
-            this.label_tel.Size = new System.Drawing.Size(33, 13);
-            this.label_tel.TabIndex = 6;
-            this.label_tel.Text = "TEL :";
-            // 
-            // textBox_tel
-            // 
-            this.textBox_tel.Location = new System.Drawing.Point(64, 98);
-            this.textBox_tel.Name = "textBox_tel";
-            this.textBox_tel.Size = new System.Drawing.Size(120, 20);
-            this.textBox_tel.TabIndex = 7;
+            this.radioButton_add.Click += new System.EventHandler(this.radioButton_add_Click);
             // 
             // ManagerMainForm
             // 
@@ -578,6 +577,8 @@
             this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.groupBox_add_address.ResumeLayout(false);
+            this.groupBox_add_address.PerformLayout();
             this.groupBox_alter.ResumeLayout(false);
             this.groupBox_alter.PerformLayout();
             this.groupBox_add.ResumeLayout(false);
@@ -586,8 +587,6 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox_add_address.ResumeLayout(false);
-            this.groupBox_add_address.PerformLayout();
             this.ResumeLayout(false);
 
         }

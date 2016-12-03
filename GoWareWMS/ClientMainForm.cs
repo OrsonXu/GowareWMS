@@ -308,6 +308,10 @@ namespace GoWareWMS
 
         private bool checkText(string text)
         {
+            if (text.Length == 0)
+            {
+                return false;
+            }
             foreach (char c in text)
             {
                 int n = (int)c;

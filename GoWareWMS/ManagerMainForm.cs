@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Threading;
 
 namespace GoWareWMS
 {
@@ -21,9 +22,17 @@ namespace GoWareWMS
         private DataColumn dc_warehouse_id_view;
         private DataColumn dc_warehouse_name_view;
 
+        private DataTable dt_warehouse_manage;
+        private DataColumn dc_warehouse_id_manage;
+        private DataColumn dc_warehouse_name_manage;
+
         private DataTable dt_category_view;
         private DataColumn dc_category_id_view;
         private DataColumn dc_category_name_view;
+
+        private DataTable dt_category_manage;
+        private DataColumn dc_category_id_manage;
+        private DataColumn dc_category_name_manage;
 
         private DataSet ds_search;
 
@@ -49,6 +58,17 @@ namespace GoWareWMS
             dc_category_name_view = new DataColumn("name_category", typeof(string));
             dt_category_view.Columns.Add(dc_category_id_view);
             dt_category_view.Columns.Add(dc_category_name_view);
+
+            dt_warehouse_manage = new DataTable();
+            dc_warehouse_id_manage = new DataColumn("id_warehouse", typeof(int));
+            dc_warehouse_name_manage = new DataColumn("name_warehouse", typeof(string));
+            dt_warehouse_manage.Columns.Add(dc_warehouse_id_manage);
+            dt_warehouse_manage.Columns.Add(dc_warehouse_name_manage);
+            dt_category_manage = new DataTable();
+            dc_category_id_manage = new DataColumn("id_category", typeof(int));
+            dc_category_name_manage = new DataColumn("name_category", typeof(string));
+            dt_category_manage.Columns.Add(dc_category_id_manage);
+            dt_category_manage.Columns.Add(dc_category_name_manage);
 
             ds_search = new DataSet();
 
@@ -79,18 +99,24 @@ namespace GoWareWMS
                                             + "ON a.id_inventory = b.id_inventory) as DateInOut "
                                         + "ON history_info.id_inventory = DateInOut.id_inventory ";
 
-            SetComboWarehouseView(dt_warehouse_view);
-            SetComboCategoryView(dt_category_view);
+            //SetComboWarehouseView(dt_warehouse_view);
+            //SetComboCategoryView(dt_category_view);
+            manage_option_add_alter = "add";
+            manage_option_warehouse_category = "category";
+
+            UpdateComboBox();
+
             SetDefaultSearch(mysql_cmd_search_inventory_basic);
 
             radioButton_inventory.Checked = true;
 
             view_textBox_InvNO.Clear();
 
-            manage_option_add_alter = "add";
-            manage_option_warehouse_category = "category";
+
             radioButton_add.Select();
             radioButton_category.Select();
+            radioButton_add.Checked = true;
+            radioButton_category.Checked = true;
             groupBox_add.Visible = true;
             groupBox_alter.Visible = false;
             groupBox_add_address.Visible = false;
@@ -167,6 +193,7 @@ namespace GoWareWMS
         {
             dt_warehouse.Clear();
             SetComboWarehouse(dt_warehouse);
+            manage_comboBox.DataSource = null;
             manage_comboBox.DisplayMember = "name_warehouse";
             manage_comboBox.ValueMember = "id_warehouse";
             manage_comboBox.DataSource = dt_warehouse;
@@ -215,9 +242,10 @@ namespace GoWareWMS
         {
             dt_category.Clear();
             SetComboCategory(dt_category);
-            view_comboBox_category.DisplayMember = "name_category";
-            view_comboBox_category.ValueMember = "id_category";
-            view_comboBox_category.DataSource = dt_category;
+            manage_comboBox.DataSource = null;            
+            manage_comboBox.DisplayMember = "name_category";
+            manage_comboBox.ValueMember = "id_category";
+            manage_comboBox.DataSource = dt_category;
         }
 
         private void groupBox1_Paint(object sender, PaintEventArgs e)
@@ -387,31 +415,6 @@ namespace GoWareWMS
             e.Graphics.Clear(Color.White);
         }
 
-        private void radioButton_add_CheckedChanged(object sender, EventArgs e)
-        {
-            manage_option_add_alter = "add";
-            groupBox_add.Visible = true;
-            groupBox_alter.Visible = false;
-        }
-
-        private void radioButton_alter_CheckedChanged(object sender, EventArgs e)
-        {
-            manage_option_add_alter = "alter";
-            groupBox_add.Visible = false;
-            groupBox_alter.Visible = true;
-        }
-
-        private void radioButton_warehouse_CheckedChanged(object sender, EventArgs e)
-        {
-            manage_option_warehouse_category = "warehouse";
-            groupBox_add_address.Visible = true;
-        }
-
-        private void radioButton_category_CheckedChanged(object sender, EventArgs e)
-        {
-            manage_option_warehouse_category = "category";
-            groupBox_add_address.Visible = false;
-        }
 
         private void manage_btn_confirm_Click(object sender, EventArgs e)
         {
@@ -434,7 +437,7 @@ namespace GoWareWMS
                 }
                 string mysql_cmd = "";
                 // If the warehouse is selected
-                if (manage_option_warehouse_category == "wareshouse")
+                if (manage_option_warehouse_category == "warehouse")
                 {
                     string street = textBox_street.Text;
                     string city = textBox_city.Text;
@@ -464,33 +467,201 @@ namespace GoWareWMS
                         textBox_tel.Clear();
                         return;
                     }
+                    if (db_connect.OpenConnection())
+                    {
+                        mysql_cmd = "INSERT INTO `gowaredb`.`warehouse` "
+                            + "(`name`, `fee`, `street`, `city`, `country`, `tel`) "
+                            + "VALUES (@name,  @fee, @street, @city, @country, @tel);";
+                        MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                        cmd.Parameters.AddWithValue("@name", name);
+                        cmd.Parameters.AddWithValue("@fee", fee);
+                        cmd.Parameters.AddWithValue("@street", street);
+                        cmd.Parameters.AddWithValue("@city", city);
+                        cmd.Parameters.AddWithValue("@country", country);
+                        cmd.Parameters.AddWithValue("@tel", tel);
+                        if (cmd.ExecuteNonQuery() > 0)
+                        {
+                            MessageBox.Show("New warehouse has been assigned!");
+                            textBox_add_fee.Clear();
+                            textBox_add_name.Clear();
+                            textBox_street.Clear();
+                            textBox_city.Clear();
+                            textBox_country.Clear();
+                            textBox_tel.Clear();
+                            UpdateComboBox();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Insert Error!");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
                 }
                 // If the category is selected
                 else
                 {
-
+                    // First get the overall number of the existing category.
+                    int count_category = dt_category_manage.Rows.Count;
+                    // Then get the current fee of the Other type
+                    string fee_other = "";
+                    MySqlCommand cmd;
+                    if (db_connect.OpenConnection())
+                    {
+                        mysql_cmd = "SELECT fee FROM category WHERE id_category = @category_other;";
+                        cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                        cmd.Parameters.AddWithValue("@category_other", count_category);
+                        MySqlDataReader dataReader = cmd.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            fee_other = dataReader["fee"].ToString();
+                        }
+                        if (fee_other == "")
+                        {
+                            MessageBox.Show("Database Category Error!");
+                        }
+                    } 
+                    else 
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
+                    if (!db_connect.CloseConnection())
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
+                    if (db_connect.OpenConnection())
+                    {
+                        // Then change the current name of the Other and the fee
+                        mysql_cmd = "UPDATE `gowaredb`.`category` SET `name`=@name, `fee`=@fee WHERE `id_category`=@categoryID;";
+                        cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                        cmd.Parameters.AddWithValue("@name", name);
+                        cmd.Parameters.AddWithValue("@fee", fee);
+                        cmd.Parameters.AddWithValue("@categoryID", count_category);
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
+                    if (!db_connect.CloseConnection())
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
+                    if (db_connect.OpenConnection())
+                    {
+                        // Then insert the origin other as a new category
+                        mysql_cmd = "INSERT INTO `gowaredb`.`category` (`name`, `fee`) VALUES ('Other', @fee_other);";
+                        cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                        cmd.Parameters.AddWithValue("@fee_other", fee_other);
+                        if (cmd.ExecuteNonQuery() > 0)
+                        {
+                            MessageBox.Show("New category has been assigned!");
+                            textBox_add_name.Clear();
+                            textBox_add_fee.Clear();
+                            UpdateComboBox();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Insert Error!");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
+                    if (!db_connect.CloseConnection())
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
                 }
             }
             // If the alter is selected
             else
             {
+                string fee = textBox_alter_fee.Text;
+                string mysql_cmd = "";
+                string fee_current = "";
                 // If the warehouse is selected
-                if (manage_option_warehouse_category == "wareshouse")
+                if (manage_option_warehouse_category == "warehouse")
                 {
-
+                    // Get the current fee of this warehouse
+                    string id_warehouse = manage_comboBox.SelectedValue.ToString();
+                    // Change the new fee
+                    if (db_connect.OpenConnection())
+                    {
+                        mysql_cmd = "UPDATE `gowaredb`.`warehouse` SET `fee`=@fee WHERE `id_warehouse`=@warehouseID";
+                        MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                        cmd.Parameters.AddWithValue("@fee", fee);
+                        cmd.Parameters.AddWithValue("@warehouseID", id_warehouse);
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Update successfully!");
+                    }
+                    else
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
+                    if (!db_connect.CloseConnection())
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
                 }
                 // If the category is selected
                 else
                 {
-
+                    //// Get the current fee of this warehouse
+                    string id_category = manage_comboBox.SelectedValue.ToString();
+                    // Change the new fee
+                    if (db_connect.OpenConnection())
+                    {
+                        mysql_cmd = "UPDATE `gowaredb`.`category` SET `fee`=@fee WHERE `id_category`=@categoryID";
+                        MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                        cmd.Parameters.AddWithValue("@fee", fee);
+                        cmd.Parameters.AddWithValue("@categoryID", id_category);
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Update successfully!");
+                    }
+                    else
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
+                    if (!db_connect.CloseConnection())
+                    {
+                        MessageBox.Show(db_connect.Message);
+                    }
                 }
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
             }
 
             
         }
 
+        private void UpdateComboBox()
+        {
+            SetComboCategoryView(dt_category_view);
+            SetComboWarehouseView(dt_warehouse_view);
+            this.manage_comboBox.SelectedIndexChanged -= new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+            if (manage_option_warehouse_category == "warehouse")
+            {
+                SetComboWarehouseManege(dt_warehouse_manage);
+            }
+            else
+            {
+                SetComboCategoryManage(dt_category_manage);
+            }
+            this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+        }
+
         private bool checkTextAsNO(string text)
         {
+            if (text.Length == 0)
+            {
+                return false;
+            }
             foreach (char c in text)
             {
                 int n = (int)c;
@@ -509,6 +680,10 @@ namespace GoWareWMS
 
         private bool checkTextAsCharater(string text)
         {
+            if (text.Length == 0)
+            {
+                return false;
+            }
             foreach (char c in text)
             {
                 int n = (int)c;
@@ -526,6 +701,10 @@ namespace GoWareWMS
 
         private bool checkTextAsTEL(string text)
         {
+            if (text.Length == 0)
+            {
+                return false;
+            }
             foreach (char c in text)
             {
                 int n = (int)c;
@@ -541,5 +720,94 @@ namespace GoWareWMS
         {
             e.Graphics.Clear(Color.White);
         }
+
+
+        private void radioButton_warehouse_Click(object sender, EventArgs e)
+        {
+            manage_option_warehouse_category = "warehouse";
+            if (manage_option_add_alter == "add")
+            {
+                groupBox_add_address.Visible = true;
+            }
+            else
+            {
+                this.manage_comboBox.SelectedIndexChanged -= new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+                SetComboWarehouseManege(dt_warehouse_manage);
+                this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+                manage_comboBox.SelectedIndex = 1;
+                manage_comboBox.SelectedIndex = 0;
+            }
+        }
+
+        private void radioButton_category_Click(object sender, EventArgs e)
+        {
+            manage_option_warehouse_category = "category";
+            if (manage_option_add_alter == "add")
+            {
+                groupBox_add_address.Visible = false;
+            }
+            else
+            {
+                this.manage_comboBox.SelectedIndexChanged -= new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+                SetComboCategoryManage(dt_category_manage);
+                this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+                manage_comboBox.SelectedIndex = 1;
+                manage_comboBox.SelectedIndex = 0;
+            }
+        }
+
+        private void radioButton_add_Click(object sender, EventArgs e)
+        {
+            manage_option_add_alter = "add";
+            groupBox_add.Visible = true;
+            groupBox_alter.Visible = false;
+
+        }
+
+        private void radioButton_alter_Click(object sender, EventArgs e)
+        {
+            manage_option_add_alter = "alter";
+            groupBox_add.Visible = false;
+            groupBox_alter.Visible = true;
+        }
+
+        private void manage_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string fee_current = "";
+            string ID = manage_comboBox.SelectedValue.ToString();
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd = "SELECT fee FROM " + manage_option_warehouse_category 
+                    + " WHERE id_" + manage_option_warehouse_category + "= @ID;";
+                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                cmd.Parameters.AddWithValue("@ID", ID);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    fee_current = dataReader["fee"].ToString();
+                }
+                if (fee_current == "")
+                {
+                    MessageBox.Show("Database Error! Cannot find the warehouse!");
+                }
+                label_current_fee.Text = fee_current;
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+        }
+
+
+        // bug needed to be done
+        // The delete button of the Manager UI
+        // The gridView of the manager UI
+        // Alter the code of assign a new repo, which needs more judge
+
+
     }
 }
