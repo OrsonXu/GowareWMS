@@ -39,7 +39,7 @@ namespace GoWareWMS
         private string mysql_cmd_search_inventory_basic;
         private string mysql_cmd_search_history_basic;
         private string view_search_option;
-        private string manage_option_add_alter;
+        private string manage_option_add_alter_remove;
         private string manage_option_warehouse_category;
 
         public ManagerMainForm(Manager manager)
@@ -101,7 +101,7 @@ namespace GoWareWMS
 
             //SetComboWarehouseView(dt_warehouse_view);
             //SetComboCategoryView(dt_category_view);
-            manage_option_add_alter = "add";
+            manage_option_add_alter_remove = "add";
             manage_option_warehouse_category = "category";
 
             UpdateComboBox();
@@ -418,8 +418,35 @@ namespace GoWareWMS
 
         private void manage_btn_confirm_Click(object sender, EventArgs e)
         {
+            string categoryID_other = "";
+            string fee_other = "";
+            // First get the origin ID and fee of category
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd = "SELECT * FROM category WHERE name = 'Other';";
+                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    fee_other = dataReader["fee"].ToString();
+                    categoryID_other = dataReader["id_category"].ToString();
+                }
+                if (fee_other == "" || categoryID_other == "")
+                {
+                    MessageBox.Show("Database Category Error!");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+            }
             // If the add is selected
-            if (manage_option_add_alter == "add")
+            if (manage_option_add_alter_remove == "add")
             {
                 string name = textBox_add_name.Text;
                 string fee = textBox_add_fee.Text;
@@ -503,34 +530,7 @@ namespace GoWareWMS
                 // If the category is selected
                 else
                 {
-                    // First get the overall number of the existing category.
-                    int count_category = dt_category_manage.Rows.Count;
-                    // Then get the current fee of the Other type
-                    string fee_other = "";
                     MySqlCommand cmd;
-                    if (db_connect.OpenConnection())
-                    {
-                        mysql_cmd = "SELECT fee FROM category WHERE id_category = @category_other;";
-                        cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                        cmd.Parameters.AddWithValue("@category_other", count_category);
-                        MySqlDataReader dataReader = cmd.ExecuteReader();
-                        while (dataReader.Read())
-                        {
-                            fee_other = dataReader["fee"].ToString();
-                        }
-                        if (fee_other == "")
-                        {
-                            MessageBox.Show("Database Category Error!");
-                        }
-                    } 
-                    else 
-                    {
-                        MessageBox.Show(db_connect.Message);
-                    }
-                    if (!db_connect.CloseConnection())
-                    {
-                        MessageBox.Show(db_connect.Message);
-                    }
                     if (db_connect.OpenConnection())
                     {
                         // Then change the current name of the Other and the fee
@@ -538,7 +538,7 @@ namespace GoWareWMS
                         cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                         cmd.Parameters.AddWithValue("@name", name);
                         cmd.Parameters.AddWithValue("@fee", fee);
-                        cmd.Parameters.AddWithValue("@categoryID", count_category);
+                        cmd.Parameters.AddWithValue("@categoryID", categoryID_other);
                         cmd.ExecuteNonQuery();
                     }
                     else
@@ -578,66 +578,63 @@ namespace GoWareWMS
                 }
             }
             // If the alter is selected
-            else
+            else if (manage_option_add_alter_remove == "alter")
             {
                 string fee = textBox_alter_fee.Text;
-                string mysql_cmd = "";
-                string fee_current = "";
                 // If the warehouse is selected
-                if (manage_option_warehouse_category == "warehouse")
+                string ID = manage_comboBox.SelectedValue.ToString();
+                // Change the new fee
+                if (db_connect.OpenConnection())
                 {
-                    // Get the current fee of this warehouse
-                    string id_warehouse = manage_comboBox.SelectedValue.ToString();
-                    // Change the new fee
-                    if (db_connect.OpenConnection())
-                    {
-                        mysql_cmd = "UPDATE `gowaredb`.`warehouse` SET `fee`=@fee WHERE `id_warehouse`=@warehouseID";
-                        MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                        cmd.Parameters.AddWithValue("@fee", fee);
-                        cmd.Parameters.AddWithValue("@warehouseID", id_warehouse);
-                        cmd.ExecuteNonQuery();
-                        MessageBox.Show("Update successfully!");
-                    }
-                    else
-                    {
-                        MessageBox.Show(db_connect.Message);
-                    }
-                    if (!db_connect.CloseConnection())
-                    {
-                        MessageBox.Show(db_connect.Message);
-                    }
+                    string mysql_cmd = "UPDATE `gowaredb`.`" + manage_option_warehouse_category + 
+                        "` SET `fee`=@fee WHERE `id_" + manage_option_warehouse_category +"`=@ID";
+                    MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@fee", fee);
+                    cmd.Parameters.AddWithValue("@ID", ID);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Update successfully!");
                 }
-                // If the category is selected
                 else
                 {
-                    //// Get the current fee of this warehouse
-                    string id_category = manage_comboBox.SelectedValue.ToString();
-                    // Change the new fee
-                    if (db_connect.OpenConnection())
-                    {
-                        mysql_cmd = "UPDATE `gowaredb`.`category` SET `fee`=@fee WHERE `id_category`=@categoryID";
-                        MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                        cmd.Parameters.AddWithValue("@fee", fee);
-                        cmd.Parameters.AddWithValue("@categoryID", id_category);
-                        cmd.ExecuteNonQuery();
-                        MessageBox.Show("Update successfully!");
-                    }
-                    else
-                    {
-                        MessageBox.Show(db_connect.Message);
-                    }
-                    if (!db_connect.CloseConnection())
-                    {
-                        MessageBox.Show(db_connect.Message);
-                    }
+                    MessageBox.Show(db_connect.Message);
+                }
+                if (!db_connect.CloseConnection())
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+            }
+            // If remove is selected
+            else
+            {
+                string ID = manage_comboBox.SelectedValue.ToString();
+                if (ID == categoryID_other)
+                {
+                    MessageBox.Show("Sorry! The type 'Other' cannot be removed!");
+                    return;
+                }
+                if (db_connect.OpenConnection())
+                {
+                    string mysql_cmd = "DELETE FROM `gowaredb`.`" + manage_option_warehouse_category
+                        + "` WHERE `id_" + manage_option_warehouse_category + "`=@ID;";
+                    MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@ID", ID);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Remove successfully!");
+                    UpdateComboBox();
+                }
+                else
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+                if (!db_connect.CloseConnection())
+                {
+                    MessageBox.Show(db_connect.Message);
                 }
             }
             if (!db_connect.CloseConnection())
             {
                 MessageBox.Show(db_connect.Message);
             }
-
-            
         }
 
         private void UpdateComboBox()
@@ -654,6 +651,8 @@ namespace GoWareWMS
                 SetComboCategoryManage(dt_category_manage);
             }
             this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+            manage_comboBox.SelectedIndex = 1;
+            manage_comboBox.SelectedIndex = 0;
         }
 
         private bool checkTextAsNO(string text)
@@ -725,7 +724,7 @@ namespace GoWareWMS
         private void radioButton_warehouse_Click(object sender, EventArgs e)
         {
             manage_option_warehouse_category = "warehouse";
-            if (manage_option_add_alter == "add")
+            if (manage_option_add_alter_remove == "add")
             {
                 groupBox_add_address.Visible = true;
             }
@@ -742,7 +741,7 @@ namespace GoWareWMS
         private void radioButton_category_Click(object sender, EventArgs e)
         {
             manage_option_warehouse_category = "category";
-            if (manage_option_add_alter == "add")
+            if (manage_option_add_alter_remove == "add")
             {
                 groupBox_add_address.Visible = false;
             }
@@ -758,7 +757,7 @@ namespace GoWareWMS
 
         private void radioButton_add_Click(object sender, EventArgs e)
         {
-            manage_option_add_alter = "add";
+            manage_option_add_alter_remove = "add";
             groupBox_add.Visible = true;
             groupBox_alter.Visible = false;
 
@@ -766,9 +765,13 @@ namespace GoWareWMS
 
         private void radioButton_alter_Click(object sender, EventArgs e)
         {
-            manage_option_add_alter = "alter";
+            manage_option_add_alter_remove = "alter";
             groupBox_add.Visible = false;
             groupBox_alter.Visible = true;
+            ulabel_changed_fee.Visible = true;
+            ulabel_current_fee.Visible = true;
+            label_current_fee.Visible = true;
+            textBox_alter_fee.Visible = true;
         }
 
         private void manage_comboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -802,11 +805,19 @@ namespace GoWareWMS
             }
         }
 
+        private void radioButton_remove_Click(object sender, EventArgs e)
+        {
+            manage_option_add_alter_remove = "remove";
+            groupBox_add.Visible = false;
+            groupBox_alter.Visible = true;
+            ulabel_changed_fee.Visible = false;
+            ulabel_current_fee.Visible = false;
+            label_current_fee.Visible = false;
+            textBox_alter_fee.Visible = false;
+        }
 
-        // bug needed to be done
-        // The delete button of the Manager UI
+
         // The gridView of the manager UI
-        // Alter the code of assign a new repo, which needs more judge
 
 
     }

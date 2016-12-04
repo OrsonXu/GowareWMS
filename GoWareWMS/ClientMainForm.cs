@@ -414,12 +414,46 @@ namespace GoWareWMS
                 MessageBox.Show(db_connect.Message);
                 return "";
             }
-            // If the search result is zero, which means that this warehouse has no repository
-            // Just add a new one
+            // If the search result is zero, which means that in the inventory 
+            // there is not any this kind
             if (list[0].Count == 0)
             {
-                //AddNewRepository(warehouseID, categoryID, "1");
-                return "1";
+                string tmp_repositoryID = "";
+                if (db_connect.OpenConnection())
+                {
+                    // Judge whether there is any need to add a new repo
+                    string mysql_cmd = "SELECT * "
+                        + "FROM repository "
+                        + "WHERE id_warehouse = @warehouseID AND id_category = @categoryID "
+                        + "ORDER BY id_repository DESC;";
+                    MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@warehouseID", warehouseID);
+                    cmd.Parameters.AddWithValue("@categoryID", categoryID);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        tmp_repositoryID = dataReader["id_repository"].ToString();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+                if (!db_connect.CloseConnection())
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+                // If there is no available rpeo, assign a new one
+                if (tmp_repositoryID == "")
+                {
+                    AddNewRepository(warehouseID, categoryID, "1");
+                    return "1";
+                }
+                // Else just use the newest one
+                else
+                {
+                    return tmp_repositoryID;
+                }
             }
             else
             {

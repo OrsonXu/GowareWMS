@@ -72,6 +72,7 @@
             this.radioButton_category = new System.Windows.Forms.RadioButton();
             this.radioButton_warehouse = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radioButton_remove = new System.Windows.Forms.RadioButton();
             this.radioButton_alter = new System.Windows.Forms.RadioButton();
             this.radioButton_add = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
@@ -492,7 +493,7 @@
             this.groupBox3.AutoSize = true;
             this.groupBox3.Controls.Add(this.radioButton_category);
             this.groupBox3.Controls.Add(this.radioButton_warehouse);
-            this.groupBox3.Location = new System.Drawing.Point(104, 110);
+            this.groupBox3.Location = new System.Drawing.Point(124, 111);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(115, 103);
             this.groupBox3.TabIndex = 1;
@@ -526,19 +527,32 @@
             // groupBox2
             // 
             this.groupBox2.AutoSize = true;
+            this.groupBox2.Controls.Add(this.radioButton_remove);
             this.groupBox2.Controls.Add(this.radioButton_alter);
             this.groupBox2.Controls.Add(this.radioButton_add);
             this.groupBox2.Location = new System.Drawing.Point(30, 110);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(88, 103);
+            this.groupBox2.Size = new System.Drawing.Size(101, 106);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox2_Paint_1);
             // 
+            // radioButton_remove
+            // 
+            this.radioButton_remove.AutoSize = true;
+            this.radioButton_remove.Location = new System.Drawing.Point(30, 70);
+            this.radioButton_remove.Name = "radioButton_remove";
+            this.radioButton_remove.Size = new System.Drawing.Size(65, 17);
+            this.radioButton_remove.TabIndex = 2;
+            this.radioButton_remove.TabStop = true;
+            this.radioButton_remove.Text = "Remove";
+            this.radioButton_remove.UseVisualStyleBackColor = true;
+            this.radioButton_remove.Click += new System.EventHandler(this.radioButton_remove_Click);
+            // 
             // radioButton_alter
             // 
             this.radioButton_alter.AutoSize = true;
-            this.radioButton_alter.Location = new System.Drawing.Point(30, 67);
+            this.radioButton_alter.Location = new System.Drawing.Point(30, 51);
             this.radioButton_alter.Name = "radioButton_alter";
             this.radioButton_alter.Size = new System.Drawing.Size(46, 17);
             this.radioButton_alter.TabIndex = 1;
@@ -639,6 +653,7 @@
         private System.Windows.Forms.TextBox textBox_country;
         private System.Windows.Forms.TextBox textBox_city;
         private System.Windows.Forms.TextBox textBox_street;
+        private System.Windows.Forms.RadioButton radioButton_remove;
 
     }
 }
