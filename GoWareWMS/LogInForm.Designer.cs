@@ -88,6 +88,7 @@
             this.btn_client_register.TabIndex = 6;
             this.btn_client_register.Text = "Register";
             this.btn_client_register.UseVisualStyleBackColor = true;
+            this.btn_client_register.Click += new System.EventHandler(this.btn_client_register_Click);
             // 
             // title_client
             // 
@@ -167,6 +168,7 @@
             this.btn_manager_register.TabIndex = 6;
             this.btn_manager_register.Text = "Register";
             this.btn_manager_register.UseVisualStyleBackColor = true;
+            this.btn_manager_register.Click += new System.EventHandler(this.btn_manager_register_Click);
             // 
             // label1
             // 

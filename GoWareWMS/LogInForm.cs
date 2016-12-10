@@ -224,5 +224,17 @@ namespace GoWareWMS
                     break;
             }
         }
+
+        private void btn_client_register_Click(object sender, EventArgs e)
+        {
+            ClientRegisterForm clientRegisterForm = new ClientRegisterForm();
+            clientRegisterForm.Show();
+        }
+
+        private void btn_manager_register_Click(object sender, EventArgs e)
+        {
+            ManagerRegisterForm managerRegisterForm = new ManagerRegisterForm();
+            managerRegisterForm.Show();
+        }
     }
 }

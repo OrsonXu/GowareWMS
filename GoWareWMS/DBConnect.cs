@@ -45,7 +45,7 @@ namespace GoWareWMS
             {
                 if (Connection.State != ConnectionState.Open)
                     Connection.Open();
-                Message = "Sucessfully connect";
+                Message = "Successfully connect";
                 return true;
             }
             catch (MySqlException ex)

@@ -35,6 +35,7 @@ namespace GoWareWMS
         private DataColumn dc_category_name_manage;
 
         private DataSet ds_search;
+        private DataSet ds_manage;
 
         private string mysql_cmd_search_inventory_basic;
         private string mysql_cmd_search_history_basic;
@@ -71,6 +72,7 @@ namespace GoWareWMS
             dt_category_manage.Columns.Add(dc_category_name_manage);
 
             ds_search = new DataSet();
+            ds_manage = new DataSet();
 
             dateTimePicker_after.CustomFormat = "yyyy-MM-dd";
             dateTimePicker_before.CustomFormat = "yyyy-MM-dd";
@@ -107,6 +109,7 @@ namespace GoWareWMS
             UpdateComboBox();
 
             SetDefaultSearch(mysql_cmd_search_inventory_basic);
+            SetManage(manage_option_warehouse_category);
 
             radioButton_inventory.Checked = true;
 
@@ -134,7 +137,30 @@ namespace GoWareWMS
                 MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
                 dataAdapter.Fill(ds_search);
-                dataGridView_manager.DataSource = ds_search.Tables[0].DefaultView;
+                dataGridView_view.DataSource = ds_search.Tables[0].DefaultView;
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+                return;
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+                return;
+            }
+        }
+
+        private void SetManage(string option)
+        {
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd = "SELECT * FROM " + option;
+                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                ds_manage = new DataSet();
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
+                dataAdapter.Fill(ds_manage);
+                dataGridView_manage.DataSource = ds_manage.Tables[0].DefaultView;
             }
             else
             {
@@ -305,7 +331,7 @@ namespace GoWareWMS
                     MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
                     
                     dataAdapter.Fill(ds_search);
-                    dataGridView_manager.DataSource = ds_search.Tables[0].DefaultView;
+                    dataGridView_view.DataSource = ds_search.Tables[0].DefaultView;
                 }
                 else
                 {
@@ -372,7 +398,7 @@ namespace GoWareWMS
                     cmd.Parameters.AddWithValue("@dateBefore", before.ToString("yyyy-MM-dd") + " 23:59:59");
                     MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
                     dataAdapter.Fill(ds_search);
-                    dataGridView_manager.DataSource = ds_search.Tables[0].DefaultView;
+                    dataGridView_view.DataSource = ds_search.Tables[0].DefaultView;
                 }
                 else
                 {
@@ -414,7 +440,6 @@ namespace GoWareWMS
         {
             e.Graphics.Clear(Color.White);
         }
-
 
         private void manage_btn_confirm_Click(object sender, EventArgs e)
         {
@@ -593,6 +618,7 @@ namespace GoWareWMS
                     cmd.Parameters.AddWithValue("@ID", ID);
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Update successfully!");
+                    textBox_alter_fee.Clear();
                 }
                 else
                 {
@@ -635,6 +661,7 @@ namespace GoWareWMS
             {
                 MessageBox.Show(db_connect.Message);
             }
+            SetManage(manage_option_warehouse_category);
         }
 
         private void UpdateComboBox()
@@ -720,10 +747,10 @@ namespace GoWareWMS
             e.Graphics.Clear(Color.White);
         }
 
-
         private void radioButton_warehouse_Click(object sender, EventArgs e)
         {
             manage_option_warehouse_category = "warehouse";
+            SetManage(manage_option_warehouse_category);
             if (manage_option_add_alter_remove == "add")
             {
                 groupBox_add_address.Visible = true;
@@ -741,6 +768,7 @@ namespace GoWareWMS
         private void radioButton_category_Click(object sender, EventArgs e)
         {
             manage_option_warehouse_category = "category";
+            SetManage(manage_option_warehouse_category);
             if (manage_option_add_alter_remove == "add")
             {
                 groupBox_add_address.Visible = false;
@@ -760,7 +788,14 @@ namespace GoWareWMS
             manage_option_add_alter_remove = "add";
             groupBox_add.Visible = true;
             groupBox_alter.Visible = false;
-
+            if (manage_option_warehouse_category == "warehouse")
+            {
+                groupBox_add_address.Visible = true;
+            }
+            else
+            {
+                groupBox_add_address.Visible = false;
+            }
         }
 
         private void radioButton_alter_Click(object sender, EventArgs e)
@@ -768,10 +803,23 @@ namespace GoWareWMS
             manage_option_add_alter_remove = "alter";
             groupBox_add.Visible = false;
             groupBox_alter.Visible = true;
+            groupBox_add_address.Visible = false;
             ulabel_changed_fee.Visible = true;
             ulabel_current_fee.Visible = true;
             label_current_fee.Visible = true;
             textBox_alter_fee.Visible = true;
+        }
+
+        private void radioButton_remove_Click(object sender, EventArgs e)
+        {
+            manage_option_add_alter_remove = "remove";
+            groupBox_add.Visible = false;
+            groupBox_alter.Visible = true;
+            groupBox_add_address.Visible = false;
+            ulabel_changed_fee.Visible = false;
+            ulabel_current_fee.Visible = false;
+            label_current_fee.Visible = false;
+            textBox_alter_fee.Visible = false;
         }
 
         private void manage_comboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -805,16 +853,7 @@ namespace GoWareWMS
             }
         }
 
-        private void radioButton_remove_Click(object sender, EventArgs e)
-        {
-            manage_option_add_alter_remove = "remove";
-            groupBox_add.Visible = false;
-            groupBox_alter.Visible = true;
-            ulabel_changed_fee.Visible = false;
-            ulabel_current_fee.Visible = false;
-            label_current_fee.Visible = false;
-            textBox_alter_fee.Visible = false;
-        }
+
 
 
         // The gridView of the manager UI

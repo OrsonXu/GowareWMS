@@ -30,7 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dataGridView_manager = new System.Windows.Forms.DataGridView();
+            this.dataGridView_view = new System.Windows.Forms.DataGridView();
             this.button_search = new System.Windows.Forms.Button();
             this.view_label_InvNO = new System.Windows.Forms.Label();
             this.view_textBox_InvNO = new System.Windows.Forms.TextBox();
@@ -75,9 +75,10 @@
             this.radioButton_remove = new System.Windows.Forms.RadioButton();
             this.radioButton_alter = new System.Windows.Forms.RadioButton();
             this.radioButton_add = new System.Windows.Forms.RadioButton();
+            this.dataGridView_manage = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manager)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_view)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox_add_address.SuspendLayout();
@@ -85,6 +86,7 @@
             this.groupBox_add.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manage)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -100,7 +102,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.dataGridView_manager);
+            this.tabPage1.Controls.Add(this.dataGridView_view);
             this.tabPage1.Controls.Add(this.button_search);
             this.tabPage1.Controls.Add(this.view_label_InvNO);
             this.tabPage1.Controls.Add(this.view_textBox_InvNO);
@@ -121,21 +123,21 @@
             this.tabPage1.Text = "View";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // dataGridView_manager
+            // dataGridView_view
             // 
-            this.dataGridView_manager.AllowUserToAddRows = false;
-            this.dataGridView_manager.AllowUserToDeleteRows = false;
-            this.dataGridView_manager.AllowUserToResizeColumns = false;
-            this.dataGridView_manager.AllowUserToResizeRows = false;
-            this.dataGridView_manager.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView_manager.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_manager.Location = new System.Drawing.Point(24, 100);
-            this.dataGridView_manager.MultiSelect = false;
-            this.dataGridView_manager.Name = "dataGridView_manager";
-            this.dataGridView_manager.ReadOnly = true;
-            this.dataGridView_manager.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridView_manager.Size = new System.Drawing.Size(654, 236);
-            this.dataGridView_manager.TabIndex = 11;
+            this.dataGridView_view.AllowUserToAddRows = false;
+            this.dataGridView_view.AllowUserToDeleteRows = false;
+            this.dataGridView_view.AllowUserToResizeColumns = false;
+            this.dataGridView_view.AllowUserToResizeRows = false;
+            this.dataGridView_view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_view.Location = new System.Drawing.Point(24, 100);
+            this.dataGridView_view.MultiSelect = false;
+            this.dataGridView_view.Name = "dataGridView_view";
+            this.dataGridView_view.ReadOnly = true;
+            this.dataGridView_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dataGridView_view.Size = new System.Drawing.Size(654, 236);
+            this.dataGridView_view.TabIndex = 11;
             // 
             // button_search
             // 
@@ -269,6 +271,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.dataGridView_manage);
             this.tabPage2.Controls.Add(this.groupBox_add_address);
             this.tabPage2.Controls.Add(this.groupBox_alter);
             this.tabPage2.Controls.Add(this.groupBox_add);
@@ -293,7 +296,7 @@
             this.groupBox_add_address.Controls.Add(this.textBox_country);
             this.groupBox_add_address.Controls.Add(this.textBox_city);
             this.groupBox_add_address.Controls.Add(this.textBox_street);
-            this.groupBox_add_address.Location = new System.Drawing.Point(475, 28);
+            this.groupBox_add_address.Location = new System.Drawing.Point(445, -6);
             this.groupBox_add_address.Name = "groupBox_add_address";
             this.groupBox_add_address.Size = new System.Drawing.Size(200, 124);
             this.groupBox_add_address.TabIndex = 5;
@@ -373,7 +376,7 @@
             this.groupBox_alter.Controls.Add(this.ulabel_current_fee);
             this.groupBox_alter.Controls.Add(this.label_alter_name);
             this.groupBox_alter.Controls.Add(this.manage_comboBox);
-            this.groupBox_alter.Location = new System.Drawing.Point(250, 177);
+            this.groupBox_alter.Location = new System.Drawing.Point(238, -17);
             this.groupBox_alter.Name = "groupBox_alter";
             this.groupBox_alter.Size = new System.Drawing.Size(201, 139);
             this.groupBox_alter.TabIndex = 4;
@@ -439,7 +442,7 @@
             this.groupBox_add.Controls.Add(this.textBox_add_name);
             this.groupBox_add.Controls.Add(this.label_add_fee);
             this.groupBox_add.Controls.Add(this.label_add_name);
-            this.groupBox_add.Location = new System.Drawing.Point(250, 53);
+            this.groupBox_add.Location = new System.Drawing.Point(223, 0);
             this.groupBox_add.Name = "groupBox_add";
             this.groupBox_add.Size = new System.Drawing.Size(200, 82);
             this.groupBox_add.TabIndex = 3;
@@ -480,9 +483,9 @@
             // 
             // manage_btn_confirm
             // 
-            this.manage_btn_confirm.Location = new System.Drawing.Point(504, 158);
+            this.manage_btn_confirm.Location = new System.Drawing.Point(22, 73);
             this.manage_btn_confirm.Name = "manage_btn_confirm";
-            this.manage_btn_confirm.Size = new System.Drawing.Size(75, 23);
+            this.manage_btn_confirm.Size = new System.Drawing.Size(186, 23);
             this.manage_btn_confirm.TabIndex = 2;
             this.manage_btn_confirm.Text = "Confirm";
             this.manage_btn_confirm.UseVisualStyleBackColor = true;
@@ -493,7 +496,7 @@
             this.groupBox3.AutoSize = true;
             this.groupBox3.Controls.Add(this.radioButton_category);
             this.groupBox3.Controls.Add(this.radioButton_warehouse);
-            this.groupBox3.Location = new System.Drawing.Point(124, 111);
+            this.groupBox3.Location = new System.Drawing.Point(93, -23);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(115, 103);
             this.groupBox3.TabIndex = 1;
@@ -530,7 +533,7 @@
             this.groupBox2.Controls.Add(this.radioButton_remove);
             this.groupBox2.Controls.Add(this.radioButton_alter);
             this.groupBox2.Controls.Add(this.radioButton_add);
-            this.groupBox2.Location = new System.Drawing.Point(30, 110);
+            this.groupBox2.Location = new System.Drawing.Point(-1, -24);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(101, 106);
             this.groupBox2.TabIndex = 0;
@@ -573,6 +576,15 @@
             this.radioButton_add.UseVisualStyleBackColor = true;
             this.radioButton_add.Click += new System.EventHandler(this.radioButton_add_Click);
             // 
+            // dataGridView_manage
+            // 
+            this.dataGridView_manage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_manage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_manage.Location = new System.Drawing.Point(25, 124);
+            this.dataGridView_manage.Name = "dataGridView_manage";
+            this.dataGridView_manage.Size = new System.Drawing.Size(656, 209);
+            this.dataGridView_manage.TabIndex = 6;
+            // 
             // ManagerMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -586,7 +598,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manager)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_view)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -601,6 +613,7 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -609,7 +622,7 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.DataGridView dataGridView_manager;
+        private System.Windows.Forms.DataGridView dataGridView_view;
         private System.Windows.Forms.Button button_search;
         private System.Windows.Forms.Label view_label_InvNO;
         private System.Windows.Forms.TextBox view_textBox_InvNO;
@@ -654,6 +667,7 @@
         private System.Windows.Forms.TextBox textBox_city;
         private System.Windows.Forms.TextBox textBox_street;
         private System.Windows.Forms.RadioButton radioButton_remove;
+        private System.Windows.Forms.DataGridView dataGridView_manage;
 
     }
 }

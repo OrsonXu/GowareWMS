@@ -21,3 +21,5 @@ C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug
 C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.Properties.Resources.resources
 C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.ReceipForm.resources
 C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.csproj.GenerateResource.Cache
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.ClientRegisterForm.resources
+C:\Users\orson\Desktop\tsinghua myself\ProjectRepo\GoWareWMS\GoWareWMS\obj\Debug\GoWareWMS.ManagerRegisterForm.resources

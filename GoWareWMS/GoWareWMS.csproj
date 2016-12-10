@@ -45,11 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ManagerRegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagerRegisterForm.Designer.cs">
+      <DependentUpon>ManagerRegisterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ReceipForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ReceipForm.Designer.cs">
       <DependentUpon>ReceipForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClientRegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClientRegisterForm.Designer.cs">
+      <DependentUpon>ClientRegisterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="User.cs" />
     <Compile Include="ClientMainForm.cs">
@@ -82,6 +94,9 @@
     <EmbeddedResource Include="ManagerMainForm.resx">
       <DependentUpon>ManagerMainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ManagerRegisterForm.resx">
+      <DependentUpon>ManagerRegisterForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -93,6 +108,9 @@
     </Compile>
     <EmbeddedResource Include="ReceipForm.resx">
       <DependentUpon>ReceipForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientRegisterForm.resx">
+      <DependentUpon>ClientRegisterForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
