@@ -43,6 +43,8 @@ namespace GoWareWMS
         private string manage_option_add_alter_remove;
         private string manage_option_warehouse_category;
 
+        public LogInForm logInForm { get; set; }
+
         public ManagerMainForm(Manager manager)
         {
             InitializeComponent();
@@ -853,11 +855,10 @@ namespace GoWareWMS
             }
         }
 
-
-
-
-        // The gridView of the manager UI
-
+        private void ManagerMainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            logInForm.Show();
+        }
 
     }
 }

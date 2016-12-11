@@ -63,21 +63,20 @@ namespace GoWareWMS
                             client.ID = dataReader["id_client"].ToString();
                             client.Type = dataReader["usertype"].ToString();
                             client.Email = dataReader["email"].ToString();
-                            if (client.Type == "person")
+                            if (client.Type == "personal")
                             {
                                 client.Firstname = dataReader["firstname"].ToString();
                                 client.Middlename = dataReader["middlename"].ToString();
                                 client.Lastname = dataReader["lastname"].ToString();
                                 client.Sex = dataReader["sex"].ToString();
                             }
-                            else if (client.Type == "company")
+                            else if (client.Type == "corporate")
                             {
                                 client.Companyname = dataReader["companyname"].ToString();
                             }
                             else
                             {
                                 MessageBox.Show("Client type error!");
-                                Thread.Sleep(1000);
                                 this.Close();
                             }
                             logInSucc = true;
@@ -113,6 +112,7 @@ namespace GoWareWMS
         private void switchToClientMainForm()
         {
             ClientMainForm clientMainForm = new ClientMainForm(client);
+            clientMainForm.logInForm = this;
             clientMainForm.Show();
             this.Hide();
         }
@@ -191,6 +191,7 @@ namespace GoWareWMS
         public void switchToManagerMainForm()
         {
             ManagerMainForm managerMainForm = new ManagerMainForm(manager);
+            managerMainForm.logInForm = this;
             managerMainForm.Show();
             this.Hide();
         }

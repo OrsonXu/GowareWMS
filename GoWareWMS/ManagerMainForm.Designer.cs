@@ -46,6 +46,7 @@
             this.radioButton_history = new System.Windows.Forms.RadioButton();
             this.radioButton_inventory = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dataGridView_manage = new System.Windows.Forms.DataGridView();
             this.groupBox_add_address = new System.Windows.Forms.GroupBox();
             this.textBox_tel = new System.Windows.Forms.TextBox();
             this.label_tel = new System.Windows.Forms.Label();
@@ -75,18 +76,17 @@
             this.radioButton_remove = new System.Windows.Forms.RadioButton();
             this.radioButton_alter = new System.Windows.Forms.RadioButton();
             this.radioButton_add = new System.Windows.Forms.RadioButton();
-            this.dataGridView_manage = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_view)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manage)).BeginInit();
             this.groupBox_add_address.SuspendLayout();
             this.groupBox_alter.SuspendLayout();
             this.groupBox_add.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manage)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -285,6 +285,15 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Manage";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView_manage
+            // 
+            this.dataGridView_manage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_manage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_manage.Location = new System.Drawing.Point(25, 124);
+            this.dataGridView_manage.Name = "dataGridView_manage";
+            this.dataGridView_manage.Size = new System.Drawing.Size(656, 209);
+            this.dataGridView_manage.TabIndex = 6;
             // 
             // groupBox_add_address
             // 
@@ -576,15 +585,6 @@
             this.radioButton_add.UseVisualStyleBackColor = true;
             this.radioButton_add.Click += new System.EventHandler(this.radioButton_add_Click);
             // 
-            // dataGridView_manage
-            // 
-            this.dataGridView_manage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView_manage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_manage.Location = new System.Drawing.Point(25, 124);
-            this.dataGridView_manage.Name = "dataGridView_manage";
-            this.dataGridView_manage.Size = new System.Drawing.Size(656, 209);
-            this.dataGridView_manage.TabIndex = 6;
-            // 
             // ManagerMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -595,6 +595,7 @@
             this.MinimizeBox = false;
             this.Name = "ManagerMainForm";
             this.Text = "ManagerMainForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManagerMainForm_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -603,6 +604,7 @@
             this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manage)).EndInit();
             this.groupBox_add_address.ResumeLayout(false);
             this.groupBox_add_address.PerformLayout();
             this.groupBox_alter.ResumeLayout(false);
@@ -613,7 +615,6 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_manage)).EndInit();
             this.ResumeLayout(false);
 
         }

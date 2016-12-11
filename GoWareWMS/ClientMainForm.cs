@@ -36,6 +36,8 @@ namespace GoWareWMS
 
         private string mysql_cmd_search_basic;
 
+        public LogInForm logInForm { get; set; }
+
         public ClientMainForm(Client client)
         {
             InitializeComponent();
@@ -680,6 +682,11 @@ namespace GoWareWMS
                 checkout_textBox_invNO.Clear();
                 return;
             }
+        }
+
+        private void ClientMainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            logInForm.Show();
         }
     }
 }

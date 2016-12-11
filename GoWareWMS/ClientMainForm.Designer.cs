@@ -51,9 +51,9 @@
             this.checkin_label_category = new System.Windows.Forms.Label();
             this.checkin_textBox_description = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.checkout_label_invNO = new System.Windows.Forms.Label();
-            this.checkout_textBox_invNO = new System.Windows.Forms.TextBox();
             this.checkout_btn_checkout = new System.Windows.Forms.Button();
+            this.checkout_textBox_invNO = new System.Windows.Forms.TextBox();
+            this.checkout_label_invNO = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_client)).BeginInit();
@@ -298,22 +298,6 @@
             this.tabPage3.Text = "CheckOut";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // checkout_label_invNO
-            // 
-            this.checkout_label_invNO.AutoSize = true;
-            this.checkout_label_invNO.Location = new System.Drawing.Point(181, 96);
-            this.checkout_label_invNO.Name = "checkout_label_invNO";
-            this.checkout_label_invNO.Size = new System.Drawing.Size(41, 13);
-            this.checkout_label_invNO.TabIndex = 0;
-            this.checkout_label_invNO.Text = "Inv NO";
-            // 
-            // checkout_textBox_invNO
-            // 
-            this.checkout_textBox_invNO.Location = new System.Drawing.Point(244, 93);
-            this.checkout_textBox_invNO.Name = "checkout_textBox_invNO";
-            this.checkout_textBox_invNO.Size = new System.Drawing.Size(271, 20);
-            this.checkout_textBox_invNO.TabIndex = 1;
-            // 
             // checkout_btn_checkout
             // 
             this.checkout_btn_checkout.Location = new System.Drawing.Point(244, 160);
@@ -323,6 +307,22 @@
             this.checkout_btn_checkout.Text = "Check Out";
             this.checkout_btn_checkout.UseVisualStyleBackColor = true;
             this.checkout_btn_checkout.Click += new System.EventHandler(this.checkout_btn_checkout_Click);
+            // 
+            // checkout_textBox_invNO
+            // 
+            this.checkout_textBox_invNO.Location = new System.Drawing.Point(244, 93);
+            this.checkout_textBox_invNO.Name = "checkout_textBox_invNO";
+            this.checkout_textBox_invNO.Size = new System.Drawing.Size(271, 20);
+            this.checkout_textBox_invNO.TabIndex = 1;
+            // 
+            // checkout_label_invNO
+            // 
+            this.checkout_label_invNO.AutoSize = true;
+            this.checkout_label_invNO.Location = new System.Drawing.Point(181, 96);
+            this.checkout_label_invNO.Name = "checkout_label_invNO";
+            this.checkout_label_invNO.Size = new System.Drawing.Size(41, 13);
+            this.checkout_label_invNO.TabIndex = 0;
+            this.checkout_label_invNO.Text = "Inv NO";
             // 
             // ClientMainForm
             // 
@@ -334,6 +334,7 @@
             this.MinimizeBox = false;
             this.Name = "ClientMainForm";
             this.Text = "Client - Goware";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ClientMainForm_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
