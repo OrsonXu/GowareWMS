@@ -87,6 +87,22 @@ namespace GoWareWMS
 
             view_textBox_InvNO.Clear();
             checkin_textBox_description.Clear();
+            string welcome = "Welcome To Goware! Dear ";
+            if (client.Type == "personal") {
+                if (client.Sex == "M"){
+                    welcome += "Mr. ";
+                }
+                else
+                {
+                    welcome += "Ms. ";
+                }
+                welcome += client.Lastname;
+            }
+            else
+            {
+                welcome += client.Companyname;
+            }
+            MessageBox.Show(welcome);
         }
 
         public void SetDefaultSearch()

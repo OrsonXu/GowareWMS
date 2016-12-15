@@ -80,6 +80,7 @@ namespace GoWareWMS
             dateTimePicker_before.CustomFormat = "yyyy-MM-dd";
 
             mysql_cmd_search_inventory_basic = "SELECT inventory.id_inventory as InvID, "
+                                    + "inventory.id_client as ClientID, "
                                     + "warehouse.name as Warehouse, "
                                     + "inventory.description as Description, "
                                     + "category.name as Category, "
@@ -88,6 +89,7 @@ namespace GoWareWMS
                                     + "JOIN category ON inventory.id_category = category.id_category ";
 
             mysql_cmd_search_history_basic = "SELECT history_info.id_inventory as InvID, "
+                                    + "history_info.id_client as ClientID, "
                                     + "warehouse.name as Warehouse, "
                                     + "history_info.id_repository as RepoID, "
                                     + "history_info.description as Description, "
@@ -114,6 +116,7 @@ namespace GoWareWMS
             SetManage(manage_option_warehouse_category);
 
             radioButton_inventory.Checked = true;
+            view_search_option = "inventory";
 
             view_textBox_InvNO.Clear();
 
@@ -125,6 +128,18 @@ namespace GoWareWMS
             groupBox_add.Visible = true;
             groupBox_alter.Visible = false;
             groupBox_add_address.Visible = false;
+
+            string welcome = "Nice to meet you! ";
+            if (manager.Sex == "F")
+            {
+                welcome += "Ms. ";
+            }
+            else
+            {
+                welcome += "Mr. ";
+            }
+            welcome += manager.Lastname + ".";
+            MessageBox.Show(welcome);
         }
 
         public void SetDefaultSearch(string mysql_cmd)
@@ -286,22 +301,6 @@ namespace GoWareWMS
             e.Graphics.Clear(Color.White);
         }
 
-        private void radioButton_inventory_CheckedChanged(object sender, EventArgs e)
-        {
-            view_search_option = "inventory";
-            SetDefaultSearch(mysql_cmd_search_inventory_basic);
-            ResetComboBoxDatePicker();
-            view_textBox_InvNO.Clear();
-        }
-
-        private void radioButton_history_CheckedChanged(object sender, EventArgs e)
-        {
-            view_search_option = "history";
-            SetDefaultSearch(mysql_cmd_search_history_basic);
-            ResetComboBoxDatePicker();
-            view_textBox_InvNO.Clear();
-        }
-
         private void button_search_Click(object sender, EventArgs e)
         {
             ds_search = new DataSet();
@@ -372,7 +371,8 @@ namespace GoWareWMS
                         {
                             mysql_cmd += "AND inventory.id_category = @categoryID ";
                         }
-                        mysql_cmd += "AND inventory.date_in >= @dateAfter AND inventory.date_in <= @dateBefore;";
+                        mysql_cmd += "AND inventory.date_in >= @dateAfter AND inventory.date_in <= @dateBefore ";
+                        mysql_cmd += "ORDER BY inventory.id_inventory ASC;";
                     }
                     else
                     {
@@ -385,8 +385,10 @@ namespace GoWareWMS
                         {
                             mysql_cmd += "AND history_info.id_category = @categoryID ";
                         }
-                        mysql_cmd += "AND DateInOut.DateOut >= @dateAfter AND DateInOut.DateIn <= @dateBefore;";
+                        mysql_cmd += "AND (DateInOut.DateOut >= @dateAfter OR DateInOut.DateIn <= @dateBefore) ";
+                        mysql_cmd += "ORDER BY history_info.id_inventory ASC;";
                     }
+                    
                     MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                     if (id_warehouse != "0")
                     {
@@ -859,6 +861,23 @@ namespace GoWareWMS
         {
             logInForm.Show();
         }
+
+        private void radioButton_inventory_Click(object sender, EventArgs e)
+        {
+            view_search_option = "inventory";
+            SetDefaultSearch(mysql_cmd_search_inventory_basic);
+            ResetComboBoxDatePicker();
+            view_textBox_InvNO.Clear();
+        }
+
+        private void radioButton_history_Click(object sender, EventArgs e)
+        {
+            view_search_option = "history";
+            SetDefaultSearch(mysql_cmd_search_history_basic);
+            ResetComboBoxDatePicker();
+            view_textBox_InvNO.Clear();
+        }
+
 
     }
 }

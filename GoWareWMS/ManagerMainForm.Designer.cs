@@ -257,6 +257,7 @@
             this.radioButton_history.TabStop = true;
             this.radioButton_history.Text = "History";
             this.radioButton_history.UseVisualStyleBackColor = true;
+            this.radioButton_history.Click += new System.EventHandler(this.radioButton_history_Click);
             // 
             // radioButton_inventory
             // 
@@ -268,6 +269,7 @@
             this.radioButton_inventory.TabStop = true;
             this.radioButton_inventory.Text = "Inventory";
             this.radioButton_inventory.UseVisualStyleBackColor = true;
+            this.radioButton_inventory.Click += new System.EventHandler(this.radioButton_inventory_Click);
             // 
             // tabPage2
             // 
