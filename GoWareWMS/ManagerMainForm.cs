@@ -79,6 +79,8 @@ namespace GoWareWMS
             dateTimePicker_after.CustomFormat = "yyyy-MM-dd";
             dateTimePicker_before.CustomFormat = "yyyy-MM-dd";
 
+            // Basic sql command for searching in inventory table
+            // More constraint can be added at the end
             mysql_cmd_search_inventory_basic = "SELECT inventory.id_inventory as InvID, "
                                     + "inventory.id_client as ClientID, "
                                     + "warehouse.name as Warehouse, "
@@ -88,6 +90,8 @@ namespace GoWareWMS
                                 + "FROM inventory JOIN warehouse ON inventory.id_warehouse = warehouse.id_warehouse "
                                     + "JOIN category ON inventory.id_category = category.id_category ";
 
+            // Basic sql command for searching in history table
+            // More constraint can be added at the end
             mysql_cmd_search_history_basic = "SELECT history_info.id_inventory as InvID, "
                                     + "history_info.id_client as ClientID, "
                                     + "warehouse.name as Warehouse, "
@@ -107,19 +111,20 @@ namespace GoWareWMS
 
             //SetComboWarehouseView(dt_warehouse_view);
             //SetComboCategoryView(dt_category_view);
+
+            // Set default search
             manage_option_add_alter_remove = "add";
             manage_option_warehouse_category = "category";
-
-            UpdateComboBox();
-
             SetDefaultSearch(mysql_cmd_search_inventory_basic);
             SetManage(manage_option_warehouse_category);
 
+            // Set all of the combobox
+            UpdateComboBox();
+
+            // Set default selection
             radioButton_inventory.Checked = true;
             view_search_option = "inventory";
-
             view_textBox_InvNO.Clear();
-
 
             radioButton_add.Select();
             radioButton_category.Select();
@@ -129,6 +134,7 @@ namespace GoWareWMS
             groupBox_alter.Visible = false;
             groupBox_add_address.Visible = false;
 
+            // Show the welcome messagebox
             string welcome = "Nice to meet you! ";
             if (manager.Sex == "F")
             {
@@ -141,7 +147,10 @@ namespace GoWareWMS
             welcome += manager.Lastname + ".";
             MessageBox.Show(welcome);
         }
-
+        /// <summary>
+        /// Set the default DataGridView in the "review" tab
+        /// </summary>
+        /// <param name="mysql_cmd">The selection command</param>
         public void SetDefaultSearch(string mysql_cmd)
         {
             if (db_connect.OpenConnection())
@@ -167,9 +176,18 @@ namespace GoWareWMS
                 return;
             }
         }
-
+        /// <summary>
+        /// Set the DataGridView in the "manage" tab
+        /// </summary>
+        /// <param name="option">If category/warehouse, then category/warehouse information will be shown</param>
         private void SetManage(string option)
         {
+            // Ensure the connection is closed
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+                return;
+            }
             if (db_connect.OpenConnection())
             {
                 string mysql_cmd = "SELECT * FROM " + option;
@@ -642,13 +660,58 @@ namespace GoWareWMS
                     MessageBox.Show("Sorry! The type 'Other' cannot be removed!");
                     return;
                 }
+
+                string mysql_cmd;
+                MySqlCommand cmd;
                 if (db_connect.OpenConnection())
                 {
-                    string mysql_cmd = "DELETE FROM `gowaredb`.`" + manage_option_warehouse_category
+                    // Judge whether the category/warehouse can be removed.
+                    mysql_cmd = "SELECT * FROM inventory WHERE `id_" + manage_option_warehouse_category + "`=@ID;";
+                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@ID", ID);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        // If the dataReader is not null, 
+                        // then there exists at least one inventory with this category/warehouse 
+                        MessageBox.Show("Sorry! There still exists some inventories belonging to this " + manage_option_warehouse_category);
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+                if (!db_connect.CloseConnection())
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+                if (db_connect.OpenConnection())
+                {
+                    // If can be removed, then should first remove the corresponding repository
+                    mysql_cmd = "DELETE FROM `gowaredb`.`" + "repository"
                         + "` WHERE `id_" + manage_option_warehouse_category + "`=@ID;";
-                    MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                     cmd.Parameters.AddWithValue("@ID", ID);
                     cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+                if (!db_connect.CloseConnection())
+                {
+                    MessageBox.Show(db_connect.Message);
+                }
+                if (db_connect.OpenConnection())
+                {
+                    // Then remove the category/warehouse 
+                    mysql_cmd = "DELETE FROM `gowaredb`.`" + manage_option_warehouse_category
+                        + "` WHERE `id_" + manage_option_warehouse_category + "`=@ID;";
+                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@ID", ID);
+                    cmd.ExecuteNonQuery();
+
                     MessageBox.Show("Remove successfully!");
                     UpdateComboBox();
                 }
