@@ -31,7 +31,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridView_view = new System.Windows.Forms.DataGridView();
-            this.button_search = new System.Windows.Forms.Button();
+            this.view_btn_search = new System.Windows.Forms.Button();
             this.view_label_InvNO = new System.Windows.Forms.Label();
             this.view_textBox_InvNO = new System.Windows.Forms.TextBox();
             this.view_comboBox_warehouse = new System.Windows.Forms.ComboBox();
@@ -103,7 +103,7 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.dataGridView_view);
-            this.tabPage1.Controls.Add(this.button_search);
+            this.tabPage1.Controls.Add(this.view_btn_search);
             this.tabPage1.Controls.Add(this.view_label_InvNO);
             this.tabPage1.Controls.Add(this.view_textBox_InvNO);
             this.tabPage1.Controls.Add(this.view_comboBox_warehouse);
@@ -139,15 +139,15 @@
             this.dataGridView_view.Size = new System.Drawing.Size(654, 236);
             this.dataGridView_view.TabIndex = 11;
             // 
-            // button_search
+            // view_btn_search
             // 
-            this.button_search.Location = new System.Drawing.Point(603, 54);
-            this.button_search.Name = "button_search";
-            this.button_search.Size = new System.Drawing.Size(75, 23);
-            this.button_search.TabIndex = 10;
-            this.button_search.Text = "Search";
-            this.button_search.UseVisualStyleBackColor = true;
-            this.button_search.Click += new System.EventHandler(this.button_search_Click);
+            this.view_btn_search.Location = new System.Drawing.Point(603, 54);
+            this.view_btn_search.Name = "view_btn_search";
+            this.view_btn_search.Size = new System.Drawing.Size(75, 23);
+            this.view_btn_search.TabIndex = 10;
+            this.view_btn_search.Text = "Search";
+            this.view_btn_search.UseVisualStyleBackColor = true;
+            this.view_btn_search.Click += new System.EventHandler(this.view_btn_search_Click);
             // 
             // view_label_InvNO
             // 
@@ -549,7 +549,7 @@
             this.groupBox2.Size = new System.Drawing.Size(101, 106);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox2_Paint_1);
+            this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox2_Paint);
             // 
             // radioButton_remove
             // 
@@ -626,7 +626,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView dataGridView_view;
-        private System.Windows.Forms.Button button_search;
+        private System.Windows.Forms.Button view_btn_search;
         private System.Windows.Forms.Label view_label_InvNO;
         private System.Windows.Forms.TextBox view_textBox_InvNO;
         private System.Windows.Forms.ComboBox view_comboBox_warehouse;

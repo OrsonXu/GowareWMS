@@ -17,24 +17,37 @@ namespace GoWareWMS
     {
         private Manager manager;
         private DBConnect db_connect;
-
+        /// <summary>
+        /// Datatable for the warehouse combox of the view tab
+        /// </summary>
         private DataTable dt_warehouse_view;
         private DataColumn dc_warehouse_id_view;
         private DataColumn dc_warehouse_name_view;
-
+        /// <summary>
+        /// Datatable for the warehouse combox of the manage tab
+        /// </summary>
         private DataTable dt_warehouse_manage;
         private DataColumn dc_warehouse_id_manage;
         private DataColumn dc_warehouse_name_manage;
-
+        /// <summary>
+        /// Datatable for the category combox of the view tab
+        /// </summary>
         private DataTable dt_category_view;
         private DataColumn dc_category_id_view;
         private DataColumn dc_category_name_view;
-
+        /// <summary>
+        /// Datatable for the category combox of the manage tab
+        /// </summary>
         private DataTable dt_category_manage;
         private DataColumn dc_category_id_manage;
         private DataColumn dc_category_name_manage;
-
+        /// <summary>
+        /// Dataset to bind into the datagrid in the view tab
+        /// </summary>
         private DataSet ds_search;
+        /// <summary>
+        /// Dataset to bind into the datagrid in the manage tab
+        /// </summary>
         private DataSet ds_manage;
 
         private string mysql_cmd_search_inventory_basic;
@@ -148,6 +161,15 @@ namespace GoWareWMS
             MessageBox.Show(welcome);
         }
         /// <summary>
+        /// When the form is closed, back to the login form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ManagerMainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            logInForm.Show();
+        }
+        /// <summary>
         /// Set the default DataGridView in the "review" tab
         /// </summary>
         /// <param name="mysql_cmd">The selection command</param>
@@ -208,7 +230,10 @@ namespace GoWareWMS
                 return;
             }
         }
-
+        /// <summary>
+        /// Set the datatable of warehouse. Used by view combo and manage combo.
+        /// </summary>
+        /// <param name="dt_warehouse"></param>
         private void SetComboWarehouse(DataTable dt_warehouse)
         {
             if (db_connect.OpenConnection())
@@ -236,7 +261,10 @@ namespace GoWareWMS
                 return;
             }
         }
-
+        /// <summary>
+        /// Set the datatable of the warehouse combo in view tab.
+        /// </summary>
+        /// <param name="dt_warehouse"></param>
         public void SetComboWarehouseView(DataTable dt_warehouse)
         {
             dt_warehouse.Clear();
@@ -249,8 +277,11 @@ namespace GoWareWMS
             view_comboBox_warehouse.ValueMember = "id_warehouse";
             view_comboBox_warehouse.DataSource = dt_warehouse;
         }
-
-        public void SetComboWarehouseManege(DataTable dt_warehouse)
+        /// <summary>
+        /// Set the datatable of the warehouse combo in manage tab.
+        /// </summary>
+        /// <param name="dt_warehouse"></param>
+        public void SetComboWarehouseManage(DataTable dt_warehouse)
         {
             dt_warehouse.Clear();
             SetComboWarehouse(dt_warehouse);
@@ -259,7 +290,10 @@ namespace GoWareWMS
             manage_comboBox.ValueMember = "id_warehouse";
             manage_comboBox.DataSource = dt_warehouse;
         }
-
+        /// <summary>
+        /// Set the datatable of category. Used by view combo and manage combo.
+        /// </summary>
+        /// <param name="dt_category"></param>
         private void SetComboCategory(DataTable dt_category)
         {
             if (db_connect.OpenConnection())
@@ -285,7 +319,10 @@ namespace GoWareWMS
                 MessageBox.Show(db_connect.Message);
             }
         }
-
+        /// <summary>
+        /// Set the datatable of the category combo in view tab.
+        /// </summary>
+        /// <param name="dt_category"></param>
         public void SetComboCategoryView(DataTable dt_category)
         {
             dt_category.Clear();
@@ -298,7 +335,10 @@ namespace GoWareWMS
             view_comboBox_category.ValueMember = "id_category";
             view_comboBox_category.DataSource = dt_category;
         }
-
+        /// <summary>
+        /// Set the datatable of the category combo in manage tab.
+        /// </summary>
+        /// <param name="dt_category"></param>
         public void SetComboCategoryManage(DataTable dt_category)
         {
             dt_category.Clear();
@@ -308,21 +348,47 @@ namespace GoWareWMS
             manage_comboBox.ValueMember = "id_category";
             manage_comboBox.DataSource = dt_category;
         }
-
-        private void groupBox1_Paint(object sender, PaintEventArgs e)
-        {      
-            e.Graphics.Clear(Color.White);
-        }
-
-        private void groupBox2_Paint(object sender, PaintEventArgs e)
+        /// <summary>
+        /// Reset the datapicker to be today (as default)
+        /// </summary>
+        private void ResetComboBoxDatePicker()
         {
-            e.Graphics.Clear(Color.White);
+            view_comboBox_warehouse.Text = "All";
+            view_comboBox_category.Text = "All";
+            dateTimePicker_after.Value = DateTime.Today;
+            dateTimePicker_before.Value = DateTime.Today;
         }
-
-        private void button_search_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Update all of the combobox together.
+        /// </summary>
+        private void UpdateComboBox()
+        {
+            SetComboCategoryView(dt_category_view);
+            SetComboWarehouseView(dt_warehouse_view);
+            this.manage_comboBox.SelectedIndexChanged -= new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+            if (manage_option_warehouse_category == "warehouse")
+            {
+                SetComboWarehouseManage(dt_warehouse_manage);
+            }
+            else
+            {
+                SetComboCategoryManage(dt_category_manage);
+            }
+            this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+            // Simulate the click
+            manage_comboBox.SelectedIndex = 1;
+            manage_comboBox.SelectedIndex = 0;
+        }
+        /// <summary>
+        /// Things that would happen when clicking the search button in the view tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void view_btn_search_Click(object sender, EventArgs e)
         {
             ds_search = new DataSet();
             string invNO = view_textBox_InvNO.Text;
+            // If search by Inventory ID
             if (invNO != "")
             {
                 if (!checkTextAsNO(invNO))
@@ -343,12 +409,12 @@ namespace GoWareWMS
                     else
                     {
                         mysql_cmd = mysql_cmd_search_history_basic
-                                            + "WHERE history_info.id_inventory = @invID;";   
+                                            + "WHERE history_info.id_inventory = @invID;";
                     }
+                    // Select the value to fill the datagrid.
                     MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                     cmd.Parameters.AddWithValue("@invID", invNO);
                     MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
-                    
                     dataAdapter.Fill(ds_search);
                     dataGridView_view.DataSource = ds_search.Tables[0].DefaultView;
                 }
@@ -362,14 +428,18 @@ namespace GoWareWMS
                     MessageBox.Show(db_connect.Message);
                     return;
                 }
+                // Reset the other three constraints selection
                 ResetComboBoxDatePicker();
+                UpdateComboBox();
             }
+            // Else add constraints by warehouse/category/date
             else
             {
                 string id_warehouse = view_comboBox_warehouse.SelectedValue.ToString();
                 string id_category = view_comboBox_category.SelectedValue.ToString();
                 DateTime before = dateTimePicker_before.Value;
                 DateTime after = dateTimePicker_after.Value;
+                // Check for the calidity of the date
                 if (after > before.AddDays(1))
                 {
                     MessageBox.Show("Sorry! The date you selected is invalid!");
@@ -406,7 +476,6 @@ namespace GoWareWMS
                         mysql_cmd += "AND (DateInOut.DateOut >= @dateAfter OR DateInOut.DateIn <= @dateBefore) ";
                         mysql_cmd += "ORDER BY history_info.id_inventory ASC;";
                     }
-                    
                     MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                     if (id_warehouse != "0")
                     {
@@ -434,35 +503,11 @@ namespace GoWareWMS
                 }
             }
         }
-
-        private void ResetComboBoxDatePicker()
-        {
-            view_comboBox_warehouse.Text = "All";
-            view_comboBox_category.Text = "All";
-            dateTimePicker_after.Value = DateTime.Today;
-            dateTimePicker_before.Value = DateTime.Today;
-        }
-
-        private void groupBox2_Paint_1(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
-        private void groupBox3_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
-        private void groupBox_add_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
-        private void groupBox_alter_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
+        /// <summary>
+        /// Things that would happen when clikcing the confirm button in the manage tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void manage_btn_confirm_Click(object sender, EventArgs e)
         {
             string categoryID_other = "";
@@ -497,6 +542,7 @@ namespace GoWareWMS
             {
                 string name = textBox_add_name.Text;
                 string fee = textBox_add_fee.Text;
+                // Check the calidity of the text input
                 if (!checkTextAsCharater(name))
                 {
                     MessageBox.Show("Sorry, the name you entered is not valid!");
@@ -553,6 +599,7 @@ namespace GoWareWMS
                         cmd.Parameters.AddWithValue("@city", city);
                         cmd.Parameters.AddWithValue("@country", country);
                         cmd.Parameters.AddWithValue("@tel", tel);
+                        // If the insert is successful
                         if (cmd.ExecuteNonQuery() > 0)
                         {
                             MessageBox.Show("New warehouse has been assigned!");
@@ -580,7 +627,7 @@ namespace GoWareWMS
                     MySqlCommand cmd;
                     if (db_connect.OpenConnection())
                     {
-                        // Then change the current name of the Other and the fee
+                        // Then change the current name of the Other and the corresponding fee
                         mysql_cmd = "UPDATE `gowaredb`.`category` SET `name`=@name, `fee`=@fee WHERE `id_category`=@categoryID;";
                         cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                         cmd.Parameters.AddWithValue("@name", name);
@@ -598,7 +645,7 @@ namespace GoWareWMS
                     }
                     if (db_connect.OpenConnection())
                     {
-                        // Then insert the origin other as a new category
+                        // Then insert the origin other as a new category in the end of the category list
                         mysql_cmd = "INSERT INTO `gowaredb`.`category` (`name`, `fee`) VALUES ('Other', @fee_other);";
                         cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                         cmd.Parameters.AddWithValue("@fee_other", fee_other);
@@ -633,8 +680,8 @@ namespace GoWareWMS
                 // Change the new fee
                 if (db_connect.OpenConnection())
                 {
-                    string mysql_cmd = "UPDATE `gowaredb`.`" + manage_option_warehouse_category + 
-                        "` SET `fee`=@fee WHERE `id_" + manage_option_warehouse_category +"`=@ID";
+                    string mysql_cmd = "UPDATE `gowaredb`.`" + manage_option_warehouse_category +
+                        "` SET `fee`=@fee WHERE `id_" + manage_option_warehouse_category + "`=@ID";
                     MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                     cmd.Parameters.AddWithValue("@fee", fee);
                     cmd.Parameters.AddWithValue("@ID", ID);
@@ -651,16 +698,16 @@ namespace GoWareWMS
                     MessageBox.Show(db_connect.Message);
                 }
             }
-            // If remove is selected
+            // If the remove is selected
             else
             {
                 string ID = manage_comboBox.SelectedValue.ToString();
+                // Check for the deletion of "Other"
                 if (ID == categoryID_other)
                 {
                     MessageBox.Show("Sorry! The type 'Other' cannot be removed!");
                     return;
                 }
-
                 string mysql_cmd;
                 MySqlCommand cmd;
                 if (db_connect.OpenConnection())
@@ -728,27 +775,14 @@ namespace GoWareWMS
             {
                 MessageBox.Show(db_connect.Message);
             }
+            // Update the datagrid in time
             SetManage(manage_option_warehouse_category);
         }
-
-        private void UpdateComboBox()
-        {
-            SetComboCategoryView(dt_category_view);
-            SetComboWarehouseView(dt_warehouse_view);
-            this.manage_comboBox.SelectedIndexChanged -= new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
-            if (manage_option_warehouse_category == "warehouse")
-            {
-                SetComboWarehouseManege(dt_warehouse_manage);
-            }
-            else
-            {
-                SetComboCategoryManage(dt_category_manage);
-            }
-            this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
-            manage_comboBox.SelectedIndex = 1;
-            manage_comboBox.SelectedIndex = 0;
-        }
-
+        /// <summary>
+        /// Check for number text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkTextAsNO(string text)
         {
             if (text.Length == 0)
@@ -765,12 +799,20 @@ namespace GoWareWMS
             }
             return true;
         }
-
+        /// <summary>
+        /// Check for int text (actually the same as check NO)
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkTextAsInt(string text)
         {
             return checkTextAsNO(text);
         }
-
+        /// <summary>
+        /// Check for normal a-z A-Z 0-9 string
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkTextAsCharater(string text)
         {
             if (text.Length == 0)
@@ -791,7 +833,11 @@ namespace GoWareWMS
             }
             return true;
         }
-
+        /// <summary>
+        /// Check for normal tel string with 0-9 and "-"
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkTextAsTEL(string text)
         {
             if (text.Length == 0)
@@ -808,12 +854,49 @@ namespace GoWareWMS
             }
             return true;
         }
-
-        private void groupBox_add_address_Paint(object sender, PaintEventArgs e)
+        /// <summary>
+        /// Update the fee when the change the selection in the combobox 
+        /// of the manage tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void manage_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            e.Graphics.Clear(Color.White);
+            string fee_current = "";
+            string ID = manage_comboBox.SelectedValue.ToString();
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd = "SELECT fee FROM " + manage_option_warehouse_category
+                    + " WHERE id_" + manage_option_warehouse_category + "= @ID;";
+                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                cmd.Parameters.AddWithValue("@ID", ID);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    // Normally it should be only loop one time
+                    fee_current = dataReader["fee"].ToString();
+                }
+                if (fee_current == "")
+                {
+                    MessageBox.Show("Database Error! Cannot find the " + manage_option_warehouse_category + "!");
+                    return;
+                }
+                label_current_fee.Text = fee_current;
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+            }
         }
-
+        /// <summary>
+        /// Update the option when clicked the radio button of the warehouse
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_warehouse_Click(object sender, EventArgs e)
         {
             manage_option_warehouse_category = "warehouse";
@@ -824,14 +907,20 @@ namespace GoWareWMS
             }
             else
             {
+                // Remove the listener temporarily for set combobox
                 this.manage_comboBox.SelectedIndexChanged -= new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
-                SetComboWarehouseManege(dt_warehouse_manage);
+                SetComboWarehouseManage(dt_warehouse_manage);
                 this.manage_comboBox.SelectedIndexChanged += new System.EventHandler(this.manage_comboBox_SelectedIndexChanged);
+                // Simulate click
                 manage_comboBox.SelectedIndex = 1;
                 manage_comboBox.SelectedIndex = 0;
             }
         }
-
+        /// <summary>
+        /// Update the option when clicked the radio button of the category
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_category_Click(object sender, EventArgs e)
         {
             manage_option_warehouse_category = "category";
@@ -849,7 +938,11 @@ namespace GoWareWMS
                 manage_comboBox.SelectedIndex = 0;
             }
         }
-
+        /// <summary>
+        /// Update the option and GUI when clicking the button of adding
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_add_Click(object sender, EventArgs e)
         {
             manage_option_add_alter_remove = "add";
@@ -864,7 +957,11 @@ namespace GoWareWMS
                 groupBox_add_address.Visible = false;
             }
         }
-
+        /// <summary>
+        /// Update the option and GUI when clicking the button of altering
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_alter_Click(object sender, EventArgs e)
         {
             manage_option_add_alter_remove = "alter";
@@ -876,7 +973,11 @@ namespace GoWareWMS
             label_current_fee.Visible = true;
             textBox_alter_fee.Visible = true;
         }
-
+        /// <summary>
+        /// Update the option and GUI when clicking the button of removing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_remove_Click(object sender, EventArgs e)
         {
             manage_option_add_alter_remove = "remove";
@@ -888,43 +989,11 @@ namespace GoWareWMS
             label_current_fee.Visible = false;
             textBox_alter_fee.Visible = false;
         }
-
-        private void manage_comboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string fee_current = "";
-            string ID = manage_comboBox.SelectedValue.ToString();
-            if (db_connect.OpenConnection())
-            {
-                string mysql_cmd = "SELECT fee FROM " + manage_option_warehouse_category 
-                    + " WHERE id_" + manage_option_warehouse_category + "= @ID;";
-                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                cmd.Parameters.AddWithValue("@ID", ID);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                while (dataReader.Read())
-                {
-                    fee_current = dataReader["fee"].ToString();
-                }
-                if (fee_current == "")
-                {
-                    MessageBox.Show("Database Error! Cannot find the warehouse!");
-                }
-                label_current_fee.Text = fee_current;
-            }
-            else
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-            if (!db_connect.CloseConnection())
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-        }
-
-        private void ManagerMainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            logInForm.Show();
-        }
-
+        /// <summary>
+        /// Update the option and GUI when clicking the button of inventory in the view tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_inventory_Click(object sender, EventArgs e)
         {
             view_search_option = "inventory";
@@ -932,7 +1001,11 @@ namespace GoWareWMS
             ResetComboBoxDatePicker();
             view_textBox_InvNO.Clear();
         }
-
+        /// <summary>
+        /// Update the option and GUI when clicking the button of inventory in the manage tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_history_Click(object sender, EventArgs e)
         {
             view_search_option = "history";
@@ -940,7 +1013,62 @@ namespace GoWareWMS
             ResetComboBoxDatePicker();
             view_textBox_InvNO.Clear();
         }
-
-
+        /// <summary>
+        /// Set the background color of the groupbox of 
+        /// inventory_history choose button in the view tab to be invisible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox1_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set the background color of the groupbox of 
+        /// add_alter_remove button in the manage tab to be invisible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox2_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set the background color of the groupbox of 
+        /// warehouse_category button in the manage tab to be invisible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox3_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set the background color of the groupbox of the altering in the manage tab to be invisible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox_alter_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set the background color of the groupbox of the adding in the manage tab to be invisible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox_add_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set the background color of the groupbox of adding address in the manage tab to be invisible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox_add_address_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
     }
 }
