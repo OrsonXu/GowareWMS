@@ -56,6 +56,8 @@ namespace GoWareWMS
         private string manage_option_add_alter_remove;
         private string manage_option_warehouse_category;
 
+        private bool manage_confirm_flag;
+
         public LogInForm logInForm { get; set; }
 
         public ManagerMainForm(Manager manager)
@@ -146,6 +148,8 @@ namespace GoWareWMS
             groupBox_add.Visible = true;
             groupBox_alter.Visible = false;
             groupBox_add_address.Visible = false;
+
+            manage_confirm_flag = false;
 
             // Show the welcome messagebox
             string welcome = "Nice to meet you! ";
@@ -556,6 +560,12 @@ namespace GoWareWMS
                     return;
                 }
                 string mysql_cmd = "";
+                // Confirm messagebox
+                if (MessageBox.Show("Do you want to add this " + manage_option_warehouse_category + "?", "Confirm Message", MessageBoxButtons.OKCancel)
+                    != DialogResult.OK)
+                {
+                    return;
+                }
                 // If the warehouse is selected
                 if (manage_option_warehouse_category == "warehouse")
                 {
@@ -674,6 +684,12 @@ namespace GoWareWMS
             // If the alter is selected
             else if (manage_option_add_alter_remove == "alter")
             {
+                // Confirm messagebox
+                if (MessageBox.Show("Do you want to alter this " + manage_option_warehouse_category + "?", "Confirm Message", MessageBoxButtons.OKCancel)
+                    != DialogResult.OK)
+                {
+                    return;
+                }
                 string fee = textBox_alter_fee.Text;
                 // If the warehouse is selected
                 string ID = manage_comboBox.SelectedValue.ToString();
@@ -706,6 +722,12 @@ namespace GoWareWMS
                 if (ID == categoryID_other)
                 {
                     MessageBox.Show("Sorry! The type 'Other' cannot be removed!");
+                    return;
+                }
+                // Confirm messagebox
+                if (MessageBox.Show("Do you want to remove this " + manage_option_warehouse_category + "?", "Confirm Message", MessageBoxButtons.OKCancel)
+                    != DialogResult.OK)
+                {
                     return;
                 }
                 string mysql_cmd;

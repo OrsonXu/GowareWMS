@@ -349,6 +349,12 @@ namespace GoWareWMS
                 MessageBox.Show("Sorry! Your description is too long!");
                 return;
             }
+            // Confirm messagebox
+            if (MessageBox.Show("Are you sure to check-in?", "Confirm Message", MessageBoxButtons.OKCancel)
+                != DialogResult.OK)
+            {
+                return;
+            }
             string inventoryID = "";
             string categoryID = checkin_comboBox_category.SelectedValue.ToString();
             string warehouseID = checkin_comboBox_warehouse.SelectedValue.ToString();
@@ -666,6 +672,12 @@ namespace GoWareWMS
             }
             if (valid)
             {
+                // Confirm messagebox
+                if (MessageBox.Show("Are you sure to check-out?", "Confirm Message", MessageBoxButtons.OKCancel)
+                    != DialogResult.OK)
+                {
+                    return;
+                }
                 dict_category = GetFeeCategory(categoryID);
                 dict_warehouse = GetFeeAddressWarehouse(warehouseID);
                 int interval = (int)(DateTime.Today.Date - Convert.ToDateTime(date).Date).Days;
