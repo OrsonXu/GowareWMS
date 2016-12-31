@@ -59,7 +59,10 @@ namespace GoWareWMS
         private bool manage_confirm_flag;
 
         public LogInForm logInForm { get; set; }
-
+        /// <summary>
+        /// Initiate the manager form and the login manager information
+        /// </summary>
+        /// <param name="manager"></param>
         public ManagerMainForm(Manager manager)
         {
             InitializeComponent();

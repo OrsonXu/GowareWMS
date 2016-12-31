@@ -15,29 +15,42 @@ namespace GoWareWMS
     {
         private Client client;
         private DBConnect db_connect;
-
+        /// <summary>
+        /// Datatable of the warehose combobox of the view tab
+        /// </summary>
         private DataTable dt_warehouse_view;
         private DataColumn dc_warehouse_id_view;
         private DataColumn dc_warehouse_name_view;
-
+        /// <summary>
+        /// Datatable of the warehose combobox of the check in
+        /// </summary>
         private DataTable dt_warehouse_checkin;
         private DataColumn dc_warehouse_id_checkin;
         private DataColumn dc_warehouse_name_checkin;
-
+        /// <summary>
+        /// Datatable of the category combobox of the view tab
+        /// </summary>
         private DataTable dt_category_view;
         private DataColumn dc_category_id_view;
         private DataColumn dc_category_name_view;
-
+        /// <summary>
+        /// Datatable of the category combobox of the check in
+        /// </summary>
         private DataTable dt_category_checkin;
         private DataColumn dc_category_id_checkin;
         private DataColumn dc_category_name_checkin;
-
+        /// <summary>
+        /// Dataset to bind into the datagrid in the view tab
+        /// </summary>
         private DataSet ds_search;
 
         private string mysql_cmd_search_basic;
 
         public LogInForm logInForm { get; set; }
-
+        /// <summary>
+        /// Initiate the client form and the login client information
+        /// </summary>
+        /// <param name="client"></param>
         public ClientMainForm(Client client)
         {
             InitializeComponent();
@@ -104,7 +117,77 @@ namespace GoWareWMS
             }
             MessageBox.Show(welcome);
         }
-
+        /// <summary>
+        /// Get a specific category fee by ID
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        private Dictionary<string, string> GetFeeCategory(string categoryID)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("fee", "0");
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd = "SELECT * FROM category WHERE id_category = @categoryID";
+                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                cmd.Parameters.AddWithValue("@categoryID", categoryID);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    dict["fee"] = dataReader["fee"].ToString();
+                }
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            return dict;
+        }
+        /// <summary>
+        /// Get a specific warehouse fee by ID
+        /// </summary>
+        /// <param name="warehouseID"></param>
+        /// <returns></returns>
+        private Dictionary<string, string> GetFeeAddressWarehouse(string warehouseID)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("fee", "0");
+            dict.Add("street", "");
+            dict.Add("city", "");
+            dict.Add("country", "");
+            dict.Add("tel", "");
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd = "SELECT * FROM warehouse WHERE id_warehouse = @warehouseID";
+                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                cmd.Parameters.AddWithValue("@warehouseID", warehouseID);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    dict["fee"] = dataReader["fee"].ToString();
+                    dict["street"] = dataReader["street"].ToString();
+                    dict["city"] = dataReader["city"].ToString();
+                    dict["country"] = dataReader["country"].ToString();
+                    dict["tel"] = dataReader["tel"].ToString();
+                }
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            return dict;
+        }
+        /// <summary>
+        /// Set default datagridview
+        /// </summary>
         public void SetDefaultSearch()
         {
             if (db_connect.OpenConnection())
@@ -129,7 +212,10 @@ namespace GoWareWMS
                 return;
             }
         }
-
+        /// <summary>
+        /// Set the combobox of the warehouse. Used by view combo and checkin combo.
+        /// </summary>
+        /// <param name="dt_warehouse"></param>
         private void SetComboWarehouse(DataTable dt_warehouse)
         {
             if (db_connect.OpenConnection())
@@ -158,7 +244,10 @@ namespace GoWareWMS
                 return;
             }
         }
-
+        /// <summary>
+        /// Set the combobox of the warehouse in view tab
+        /// </summary>
+        /// <param name="dt_warehouse"></param>
         public void SetComboWarehouseView(DataTable dt_warehouse)
         {
             dt_warehouse.Clear();
@@ -171,7 +260,10 @@ namespace GoWareWMS
             view_comboBox_warehouse.ValueMember = "id_warehouse";
             view_comboBox_warehouse.DataSource = dt_warehouse_view;
         }
-
+        /// <summary>
+        /// Set the combobox of the warehouse in the checkin tab
+        /// </summary>
+        /// <param name="dt_warehouse"></param>
         public void SetComboWarehouseCheckin(DataTable dt_warehouse)
         {
             dt_warehouse.Clear();
@@ -180,7 +272,10 @@ namespace GoWareWMS
             checkin_comboBox_warehouse.ValueMember = "id_warehouse";
             checkin_comboBox_warehouse.DataSource = dt_warehouse_checkin;
         }
-
+        /// <summary>
+        /// Set the combobox of the category. Used by view combo and checkin combo.
+        /// </summary>
+        /// <param name="dt_category"></param>
         private void SetComboCategory(DataTable dt_category)
         {
             if (db_connect.OpenConnection())
@@ -207,7 +302,10 @@ namespace GoWareWMS
                 MessageBox.Show(db_connect.Message);
             }
         }
-
+        /// <summary>
+        /// Set the combobox of the category in view tab
+        /// </summary>
+        /// <param name="dt_category"></param>
         public void SetComboCategoryView(DataTable dt_category)
         {
             dt_category.Clear();
@@ -220,7 +318,10 @@ namespace GoWareWMS
             view_comboBox_category.ValueMember = "id_category";
             view_comboBox_category.DataSource = dt_category_view;
         }
-
+        /// <summary>
+        /// Set the combobox of the category in checkin tab
+        /// </summary>
+        /// <param name="dt_category"></param>
         public void SetComboCategoryCheckin(DataTable dt_category)
         {
             dt_category.Clear();
@@ -229,10 +330,15 @@ namespace GoWareWMS
             checkin_comboBox_category.ValueMember = "id_category";
             checkin_comboBox_category.DataSource = dt_category_checkin;
         }
-
+        /// <summary>
+        /// Search when clicking the button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_search_Click(object sender, EventArgs e)
         {
             string invNO = view_textBox_InvNO.Text;
+            // If want to search by the inventory NO
             if (invNO != "")
             {
                 if (!checkText(invNO))
@@ -270,6 +376,7 @@ namespace GoWareWMS
                     return;
                 }
             }
+            // Else search by constraints
             else
             {
                 string id_warehouse = view_comboBox_warehouse.SelectedValue.ToString();
@@ -285,10 +392,12 @@ namespace GoWareWMS
                 {
                     string mysql_cmd = mysql_cmd_search_basic
                                     + "WHERE inventory.id_client = @clientID ";
+                    // Add warehouse constraints
                     if (id_warehouse != "0")
                     {
                         mysql_cmd += "AND inventory.id_warehouse = @warehouseID ";
                     }
+                    // Add category constraints
                     if (id_category != "0")
                     {
                         mysql_cmd += "AND inventory.id_category = @categoryID ";
@@ -296,10 +405,12 @@ namespace GoWareWMS
                     mysql_cmd += "AND inventory.date_in >= @dateAfter AND inventory.date_in <= @dateBefore;";
                     MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
                     cmd.Parameters.AddWithValue("@clientID", client.ID);
+                    // If warehouse constraints
                     if (id_warehouse != "0") 
                     {
                         cmd.Parameters.AddWithValue("@warehouseID", id_warehouse);
                     }
+                    // If warehouse constraints
                     if (id_category != "0") 
                     {
                         cmd.Parameters.AddWithValue("@categoryID", id_category);
@@ -323,27 +434,15 @@ namespace GoWareWMS
                 }   
             }
         }
-
-        private bool checkText(string text)
-        {
-            if (text.Length == 0)
-            {
-                return false;
-            }
-            foreach (char c in text)
-            {
-                int n = (int)c;
-                if (!(n >= 48 && n <= 57))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
+        /// <summary>
+        /// Checkin when clicking the button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void checkin_btn_checkin_Click(object sender, EventArgs e)
         {
             string description = checkin_textBox_description.Text;
+            // Check the validity of the description
             if (description.Length >= 200)
             {
                 MessageBox.Show("Sorry! Your description is too long!");
@@ -359,7 +458,11 @@ namespace GoWareWMS
             string categoryID = checkin_comboBox_category.SelectedValue.ToString();
             string warehouseID = checkin_comboBox_warehouse.SelectedValue.ToString();
             string repositoryID = DetermineRepositoryID(warehouseID, categoryID);
-            if (repositoryID == "") return;
+            if (repositoryID == "")
+            {
+                MessageBox.Show("DB Error!");
+                return;
+            }
             if (db_connect.OpenConnection())
             {
                 string mysql_cmd = "INSERT INTO `history_info` "
@@ -371,18 +474,21 @@ namespace GoWareWMS
                 cmd.Parameters.AddWithValue("@repositoryID", repositoryID);
                 cmd.Parameters.AddWithValue("@categoryID", categoryID);
                 cmd.Parameters.AddWithValue("@description", description);
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Your order has been placed!");
-                
-                mysql_cmd = "select @@IDENTITY;";
-                cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                while (dataReader.Read())
+                if (cmd.ExecuteNonQuery() > 0)
                 {
-                    inventoryID = dataReader["@@IDENTITY"].ToString();
+                    MessageBox.Show("Your order has been placed!");
+                    // Get the inventory ID of the newly inserted item
+                    mysql_cmd = "select @@IDENTITY;";
+                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        inventoryID = dataReader["@@IDENTITY"].ToString();
+                    }
+                    checkin_textBox_description.Clear();
                 }
                 
-                checkin_textBox_description.Clear();
+
             }
             else
             {
@@ -394,9 +500,101 @@ namespace GoWareWMS
                 MessageBox.Show(db_connect.Message);
                 return;
             }
+            // Show the receipt of the checkin
             ShowReceipt("checkin", "", inventoryID, categoryID, description, warehouseID, "");
         }
-
+        /// <summary>
+        /// Checkout when click the btn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkout_btn_checkout_Click(object sender, EventArgs e)
+        {
+            bool valid = false;
+            double fee = 0f;
+            string inventoryID = checkout_textBox_invNO.Text;
+            string categoryID = "";
+            Dictionary<string, string> dict_category;
+            string warehouseID = "";
+            Dictionary<string, string> dict_warehouse;
+            string description = "";
+            string date = "";
+            // Check whether the inventoryID in existed in the inventory table
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd = "SELECT * FROM inventory WHERE id_client = @clientID AND id_inventory = @inventoryID";
+                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                cmd.Parameters.AddWithValue("@inventoryID", inventoryID);
+                cmd.Parameters.AddWithValue("@clientID", client.ID);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    // If exists
+                    valid = true;
+                    categoryID = dataReader["id_category"].ToString();
+                    warehouseID = dataReader["id_warehouse"].ToString();
+                    date = dataReader["date_in"].ToString();
+                    description = dataReader["description"].ToString();
+                }
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+                return;
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+                return;
+            }
+            // If there does exist the inventory ID in the inventory table
+            if (valid)
+            {
+                // Confirm messagebox
+                if (MessageBox.Show("Are you sure to check-out?", "Confirm Message", MessageBoxButtons.OKCancel)
+                    != DialogResult.OK)
+                {
+                    return;
+                }
+                dict_category = GetFeeCategory(categoryID);
+                dict_warehouse = GetFeeAddressWarehouse(warehouseID);
+                int interval = (int)(DateTime.Today.Date - Convert.ToDateTime(date).Date).Days;
+                fee = Convert.ToDouble(dict_category["fee"]) + Convert.ToDouble(dict_warehouse["fee"]) * interval;
+                MessageBox.Show("You need to pay " + fee.ToString());
+                ShowReceipt("checkout", fee.ToString(), inventoryID, categoryID, description, warehouseID, Convert.ToDateTime(date).Date.ToShortDateString());
+                if (db_connect.OpenConnection())
+                {
+                    string mysql_cmd = "UPDATE `gowaredb`.`history_info` SET `payment`=@fee WHERE `id_inventory`=@inventoryID;";
+                    MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@fee", fee.ToString());
+                    cmd.Parameters.AddWithValue("@inventoryID", inventoryID);
+                    cmd.ExecuteNonQuery();
+                    checkout_textBox_invNO.Clear();
+                }
+                else
+                {
+                    MessageBox.Show(db_connect.Message);
+                    return;
+                }
+                if (!db_connect.CloseConnection())
+                {
+                    MessageBox.Show(db_connect.Message);
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cannot find the Inventory ID!");
+                checkout_textBox_invNO.Clear();
+                return;
+            }
+        }
+        /// <summary>
+        /// Determine the repository ID (maybe existing one or newly assigned one)
+        /// </summary>
+        /// <param name="warehouseID"></param>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
         private string DetermineRepositoryID(string warehouseID, string categoryID)
         {
             // Create an array of list to store the output of the sql select result
@@ -510,7 +708,12 @@ namespace GoWareWMS
                 return repository;
             }
         }
-
+        /// <summary>
+        /// Assign a new repository
+        /// </summary>
+        /// <param name="warehouseID"></param>
+        /// <param name="categoryID"></param>
+        /// <param name="repositoryID"></param>
         private void AddNewRepository(string warehouseID, string categoryID, string repositoryID)
         {
             if (db_connect.OpenConnection())
@@ -533,7 +736,16 @@ namespace GoWareWMS
                 MessageBox.Show(db_connect.Message);
             }
         }
-
+        /// <summary>
+        /// Showing the receipt when checkin or checkout
+        /// </summary>
+        /// <param name="check">"checkin" or "checkout" for flag</param>
+        /// <param name="finalfee"></param>
+        /// <param name="inventoryID"></param>
+        /// <param name="categoryID"></param>
+        /// <param name="description"></param>
+        /// <param name="warehouseID"></param>
+        /// <param name="date2">the checkout date</param>
         public void ShowReceipt(string check, string finalfee, string inventoryID, string categoryID, string description, string warehouseID, string date2)
         {
             DataRow [] row_category = dt_category_checkin.Select("id_category = " + categoryID);
@@ -545,71 +757,16 @@ namespace GoWareWMS
             Dictionary<string, string> feeAddressWarehouse = GetFeeAddressWarehouse(warehouseID);
             string date = DateTime.Today.ToShortDateString();
             
+            // Show the receipt form
             ReceipForm receipt = new ReceipForm();
             receipt.SetLabel(check, finalfee, inventoryID, category, description, feeCategory, warehouse, feeAddressWarehouse, date, date2);
             receipt.Show();
         }
-
-        private Dictionary<string, string> GetFeeCategory(string categoryID)
-        {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("fee", "0");
-            if (db_connect.OpenConnection())
-            {
-                string mysql_cmd = "SELECT * FROM category WHERE id_category = @categoryID";
-                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                cmd.Parameters.AddWithValue("@categoryID", categoryID);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                while (dataReader.Read())
-                {
-                    dict["fee"] = dataReader["fee"].ToString();
-                }
-            }
-            else
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-            if (!db_connect.CloseConnection())
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-            return dict;
-        }
-
-        private Dictionary<string, string> GetFeeAddressWarehouse(string warehouseID)
-        {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("fee", "0");
-            dict.Add("street", "");
-            dict.Add("city", "");
-            dict.Add("country", "");
-            dict.Add("tel", "");
-            if (db_connect.OpenConnection())
-            {
-                string mysql_cmd = "SELECT * FROM warehouse WHERE id_warehouse = @warehouseID";
-                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                cmd.Parameters.AddWithValue("@warehouseID", warehouseID);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                while (dataReader.Read())
-                {
-                    dict["fee"] = dataReader["fee"].ToString();
-                    dict["street"] = dataReader["street"].ToString();
-                    dict["city"] = dataReader["city"].ToString();
-                    dict["country"] = dataReader["country"].ToString();
-                    dict["tel"] = dataReader["tel"].ToString();
-                }
-            }
-            else
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-            if (!db_connect.CloseConnection())
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-            return dict;
-        }
-
+        /// <summary>
+        /// When the tab changed, update all of the combobox and datagridview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (tabControl1.SelectedIndex)
@@ -632,86 +789,32 @@ namespace GoWareWMS
                     break;
             }
         }
-
-        private void checkout_btn_checkout_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Check the validity of the text input
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        private bool checkText(string text)
         {
-            bool valid = false;
-            double fee = 0f;
-            string inventoryID = checkout_textBox_invNO.Text;
-            string categoryID = "";
-            Dictionary<string, string> dict_category;
-            string warehouseID = "";
-            Dictionary<string, string> dict_warehouse;
-            string description = "";
-            string date = "";
-            if (db_connect.OpenConnection())
+            if (text.Length == 0)
             {
-                string mysql_cmd = "SELECT * FROM inventory WHERE id_client = @clientID AND id_inventory = @inventoryID";
-                MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                cmd.Parameters.AddWithValue("@inventoryID", inventoryID);
-                cmd.Parameters.AddWithValue("@clientID", client.ID);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                while (dataReader.Read())
+                return false;
+            }
+            foreach (char c in text)
+            {
+                int n = (int)c;
+                if (!(n >= 48 && n <= 57))
                 {
-                    valid = true;
-                    categoryID = dataReader["id_category"].ToString();
-                    warehouseID = dataReader["id_warehouse"].ToString();
-                    date = dataReader["date_in"].ToString();
-                    description = dataReader["description"].ToString();
+                    return false;
                 }
             }
-            else
-            {
-                MessageBox.Show(db_connect.Message);
-                return;
-            }
-            if (!db_connect.CloseConnection())
-            {
-                MessageBox.Show(db_connect.Message);
-                return;
-            }
-            if (valid)
-            {
-                // Confirm messagebox
-                if (MessageBox.Show("Are you sure to check-out?", "Confirm Message", MessageBoxButtons.OKCancel)
-                    != DialogResult.OK)
-                {
-                    return;
-                }
-                dict_category = GetFeeCategory(categoryID);
-                dict_warehouse = GetFeeAddressWarehouse(warehouseID);
-                int interval = (int)(DateTime.Today.Date - Convert.ToDateTime(date).Date).Days;
-                fee = Convert.ToDouble(dict_category["fee"]) + Convert.ToDouble(dict_warehouse["fee"]) * interval;
-                MessageBox.Show("You need to pay " + fee.ToString());
-                ShowReceipt("checkout", fee.ToString(), inventoryID, categoryID, description, warehouseID, Convert.ToDateTime(date).Date.ToShortDateString());
-                if (db_connect.OpenConnection())
-                {
-                    string mysql_cmd = "UPDATE `gowaredb`.`history_info` SET `payment`=@fee WHERE `id_inventory`=@inventoryID;";
-                    MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                    cmd.Parameters.AddWithValue("@fee", fee.ToString());
-                    cmd.Parameters.AddWithValue("@inventoryID", inventoryID);
-                    cmd.ExecuteNonQuery();
-                    checkout_textBox_invNO.Clear();
-                }
-                else
-                {
-                    MessageBox.Show(db_connect.Message);
-                    return;
-                }
-                if (!db_connect.CloseConnection())
-                {
-                    MessageBox.Show(db_connect.Message);
-                    return;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Cannot find the Inventory ID!");
-                checkout_textBox_invNO.Clear();
-                return;
-            }
+            return true;
         }
-
+        /// <summary>
+        /// Reopen the log in form when close the this form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClientMainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             logInForm.Show();

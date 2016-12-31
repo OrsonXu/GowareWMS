@@ -57,8 +57,5 @@ namespace GoWareWMS
             }
         }
 
-
-
-
     }
 }
