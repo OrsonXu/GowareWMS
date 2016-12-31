@@ -16,7 +16,19 @@ namespace GoWareWMS
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Set the receipt information
+        /// </summary>
+        /// <param name="check">"checkin" or "checkout"</param>
+        /// <param name="finalfee">note: 0 for check in</param>
+        /// <param name="inventoryID"></param>
+        /// <param name="category"></param>
+        /// <param name="description"></param>
+        /// <param name="feeCategory"></param>
+        /// <param name="warehouse"></param>
+        /// <param name="feeAddressWarehouse"></param>
+        /// <param name="date1">checkin date</param>
+        /// <param name="date2">checkout date. Null if the pop up receipt is for checkin</param>
         public void SetLabel(string check, string finalfee, string inventoryID, 
             string category, string description, Dictionary<string, string> feeCategory,
             string warehouse, Dictionary<string, string> feeAddressWarehouse, string date1, string date2)

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 namespace GoWareWMS
 {
+    /// <summary>
+    ///  Class for database connection
+    /// </summary>
     public class DBConnect
     {
         public MySqlConnection Connection { get; set; }
@@ -24,7 +27,9 @@ namespace GoWareWMS
             Initialize();
         }
 
-        //Initialize values
+        /// <summary>
+        /// Initialize values
+        /// </summary>
         private void Initialize()
         {
             server = "localhost";
@@ -38,7 +43,10 @@ namespace GoWareWMS
             Connection = new MySqlConnection(connectionString);
         }
 
-        //open connection to database
+        /// <summary>
+        /// Open connection to database
+        /// </summary>
+        /// <returns>True if connected. False if not.</returns>
         public bool OpenConnection()
         {
             try
@@ -55,7 +63,10 @@ namespace GoWareWMS
             }
         }
 
-        //Close connection
+        /// <summary>
+        /// Close connection
+        /// </summary>
+        /// <returns>True if closed. False if not</returns>
         public bool CloseConnection()
         {
             try

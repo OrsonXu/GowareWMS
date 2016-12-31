@@ -17,7 +17,9 @@ namespace GoWareWMS
         private Client client;
         private Manager manager;
         private DBConnect db_connect;
-        
+        /// <summary>
+        /// Main form when running the model
+        /// </summary>
         public LogInForm()
         {
             InitializeComponent();
@@ -25,13 +27,17 @@ namespace GoWareWMS
             client = new Client();
             manager = new Manager();
         }
-
+        /// <summary>
+        /// When the client log in button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_client_login_Click(object sender, EventArgs e)
         {
             client.Username = textBox_username_client.Text;
             client.Password = textBox_pwd_client.Text;
             bool logInSucc = false;
-            
+            // Check the username
             if (client.Username == "")
             {
                 MessageBox.Show("Please enter the Username.");
@@ -42,6 +48,7 @@ namespace GoWareWMS
                 MessageBox.Show("Invalid Username.");
                 logInSucc = false;
             }
+            // Check the password
             else if (client.Password == "")
             {
                 MessageBox.Show("Please enter the Password.");
@@ -51,10 +58,13 @@ namespace GoWareWMS
                 if (db_connect.OpenConnection())
                 {
                     string mysql_cmd = "SELECT * FROM client " +
-                        "WHERE (username = \"" + client.Username + "\"" +
-                        " AND password = \"" + client.Password + "\");";
+                          "WHERE username = @name " +
+                          "AND password = @pwd;";
                     MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@name", client.Username);
+                    cmd.Parameters.AddWithValue("@pwd", client.Password);
                     MySqlDataReader dataReader = cmd.ExecuteReader();
+                    // If the client can be found in the database, log in succeed
                     while (dataReader.Read())
                     {
                         if (dataReader["username"].ToString() == client.Username
@@ -99,6 +109,7 @@ namespace GoWareWMS
                     MessageBox.Show(db_connect.Message);
                 }
             }
+            // If login succeed, switch to the client main form
             if (logInSucc)
             {
                 switchToClientMainForm();
@@ -108,7 +119,9 @@ namespace GoWareWMS
                 MessageBox.Show(db_connect.Message);
             }
         }
-
+        /// <summary>
+        /// Open the client form and hide the login form
+        /// </summary>
         private void switchToClientMainForm()
         {
             ClientMainForm clientMainForm = new ClientMainForm(client);
@@ -116,13 +129,17 @@ namespace GoWareWMS
             clientMainForm.Show();
             this.Hide();
         }
-
+        /// <summary>
+        /// When the manager log in button is clickec
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_manager_login_Click(object sender, EventArgs e)
         {
             manager.Username = textBox_username_manager.Text;
             manager.Password = textBox_pwd_manager.Text;
             bool logInSucc = false;
-
+            // Check the username
             if (manager.Username == "")
             {
                 MessageBox.Show("Please enter the Username.");
@@ -133,6 +150,7 @@ namespace GoWareWMS
                 MessageBox.Show("Invalid Username.");
                 logInSucc = false;
             }
+            // Check the password
             else if (manager.Password == "")
             {
                 MessageBox.Show("Please enter the Password.");
@@ -142,13 +160,16 @@ namespace GoWareWMS
             {
                 if (db_connect.OpenConnection())
                 {
-                    string mysql_cmd = "SELECT * FROM manager " +
-                        "WHERE (username = \"" + manager.Username + "\"" +
-                        " AND password = \"" + manager.Password + "\");";
+                    string mysql_cmd = "SELECT * FROM client " +
+                          "WHERE username = @name " +
+                          "AND password = @pwd;";
                     MySqlCommand cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@name", manager.Username);
+                    cmd.Parameters.AddWithValue("@pwd", manager.Password);
                     MySqlDataReader dataReader = cmd.ExecuteReader();
                     while (dataReader.Read())
                     {
+                        // If manager can be found in the database
                         if (dataReader["username"].ToString() == manager.Username
                             && dataReader["password"].ToString() == manager.Password)
                         {
@@ -178,6 +199,7 @@ namespace GoWareWMS
                     MessageBox.Show(db_connect.Message);
                 }
             }
+            // If login succeed, switch to the manager main form
             if (logInSucc)
             {
                 switchToManagerMainForm();
@@ -187,7 +209,9 @@ namespace GoWareWMS
                 MessageBox.Show(db_connect.Message);
             }
         }
-
+        /// <summary>
+        /// Open the manager form and hide the login form
+        /// </summary>
         public void switchToManagerMainForm()
         {
             ManagerMainForm managerMainForm = new ManagerMainForm(manager);
@@ -195,7 +219,11 @@ namespace GoWareWMS
             managerMainForm.Show();
             this.Hide();
         }
-
+        /// <summary>
+        /// Check the validity of the text input
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkText(string text)
         {
             foreach (char c in text)
@@ -210,7 +238,11 @@ namespace GoWareWMS
             }
             return true;
         }
-
+        /// <summary>
+        /// When the tab is changed between client login tab and manager login tab, refresh the textboxes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (tabControl.SelectedIndex)
@@ -225,13 +257,21 @@ namespace GoWareWMS
                     break;
             }
         }
-
+        /// <summary>
+        /// When client register button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_client_register_Click(object sender, EventArgs e)
         {
             ClientRegisterForm clientRegisterForm = new ClientRegisterForm();
             clientRegisterForm.Show();
         }
-
+        /// <summary>
+        /// When manager register button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_manager_register_Click(object sender, EventArgs e)
         {
             ManagerRegisterForm managerRegisterForm = new ManagerRegisterForm();

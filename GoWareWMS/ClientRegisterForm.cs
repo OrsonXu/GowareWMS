@@ -44,7 +44,11 @@ namespace GoWareWMS
         {
             e.Graphics.Clear(Color.White);
         }
-
+        /// <summary>
+        /// When register personal client.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_personal_Click(object sender, EventArgs e)
         {
             usertype = "personal";
@@ -52,7 +56,11 @@ namespace GoWareWMS
             groupBox_corporate.Visible = false;
             textBox_companyname.Clear();
         }
-
+        /// <summary>
+        /// When register corpporate client.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_corporate_Click(object sender, EventArgs e)
         {
             usertype = "corporate";
@@ -62,17 +70,168 @@ namespace GoWareWMS
             textBox_middlename.Clear();
             textBox_lastname.Clear();
         }
-
+        /// <summary>
+        /// Select sex as male
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_sex_m_Click(object sender, EventArgs e)
         {
             sex = "M";
         }
-
+        /// <summary>
+        /// Select sex as female
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButton_sex_f_Click(object sender, EventArgs e)
         {
             sex = "F";
         }
-
+        /// <summary>
+        /// When the register button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_register_Click(object sender, EventArgs e)
+        {
+            username = textBox_username.Text;
+            password = textBox_password.Text;
+            email = textBox_email.Text;
+            // Check username input
+            if (!checkTextAsCharater(username))
+            {
+                MessageBox.Show("Invalid username!");
+                return;
+            }
+            // Check password input
+            if (!checkTextAsCharater(password))
+            {
+                MessageBox.Show("Invalid password!");
+                return;
+            }
+            // Check email input
+            if (!checkTextAsEmail(email))
+            {
+                MessageBox.Show("Invalid email!");
+                return;
+            }
+            // Register as personal client
+            if (usertype == "personal")
+            {
+                firstname = textBox_firstname.Text;
+                middlename = textBox_middlename.Text;
+                lastname = textBox_lastname.Text;
+                if (!checkTextAsCharater(firstname))
+                {
+                    MessageBox.Show("Invalid first name!");
+                    return;
+                }
+                if (middlename.Length != 0)
+                {
+                    if (!checkTextAsCharater(middlename))
+                    {
+                        MessageBox.Show("Invalid middle name!");
+                        return;
+                    }
+                }
+                if (!checkTextAsCharater(lastname))
+                {
+                    MessageBox.Show("Invalid last name!");
+                    return;
+                }
+            }
+            // Register as corporate client
+            else
+            {
+                companyname = textBox_companyname.Text;
+                if (!checkTextAsCharater(companyname))
+                {
+                    MessageBox.Show("Invalid company name!");
+                    return;
+                }
+            }
+            if (db_connect.OpenConnection())
+            {
+                string mysql_cmd;
+                MySqlCommand cmd;
+                // Insert the new client
+                if (usertype == "personal")
+                {
+                    mysql_cmd = "INSERT INTO `gowaredb`.`client` (`usertype`, `username`, `password`, `email`, `firstname`, `middlename`, `lastname`, `sex`) "
+                        + "VALUES ('personal', @username, @password, @email, @firstname, @middlename, @lastname, @sex);";
+                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@firstname", firstname);
+                    cmd.Parameters.AddWithValue("@middlename", middlename);
+                    cmd.Parameters.AddWithValue("@lastname", lastname);
+                    cmd.Parameters.AddWithValue("@sex", sex);
+                }
+                else
+                {
+                    mysql_cmd = "INSERT INTO `gowaredb`.`client` (`usertype`, `username`, `password`, `email`, `companyname`) "
+                        + "VALUES ('corporate', @username, @password, @email, @companyname);";
+                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
+                    cmd.Parameters.AddWithValue("@companyname", companyname);
+                }
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@password", password);
+                cmd.Parameters.AddWithValue("@email", email);
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    MessageBox.Show("Registered Successfully!");
+                    this.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+            if (!db_connect.CloseConnection())
+            {
+                MessageBox.Show(db_connect.Message);
+            }
+        }
+        /// <summary>
+        /// Set groupbox back color to be white of the common part of the "personal" and "corporate"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox_both_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set groupbox back color to be white of the part of "corporate"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox_corporate_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set groupbox back color to be white of the part of "personal"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox_personal_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Set groupbox back color to be white of sex selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void groupBox_personal_sex_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+        }
+        /// <summary>
+        /// Check the text input as pure characters a-z A-Z 0-9
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkTextAsCharater(string text)
         {
             if (text.Length == 0)
@@ -93,7 +252,11 @@ namespace GoWareWMS
             }
             return true;
         }
-
+        /// <summary>
+        /// Check the text input as the company name, characters + blankspace " "
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkTextAsCompanyName(string text)
         {
             if (text.Length == 0)
@@ -115,7 +278,11 @@ namespace GoWareWMS
             }
             return true;
         }
-
+        /// <summary>
+        /// Check the text input as the email, including characters, @ and "."
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private bool checkTextAsEmail(string text)
         {
             if (text.Length == 0)
@@ -152,119 +319,5 @@ namespace GoWareWMS
             }
             return true;
         }
-
-        private void btn_register_Click(object sender, EventArgs e)
-        {
-            username = textBox_username.Text;
-            password = textBox_password.Text;
-            email = textBox_email.Text;
-            if (!checkTextAsCharater(username))
-            {
-                MessageBox.Show("Invalid username!");
-                return;
-            }
-            if (!checkTextAsCharater(password))
-            {
-                MessageBox.Show("Invalid password!");
-                return;
-            }
-            if (!checkTextAsEmail(email))
-            {
-                MessageBox.Show("Invalid email!");
-                return;
-            }
-            if (usertype == "personal")
-            {
-                firstname = textBox_firstname.Text;
-                middlename = textBox_middlename.Text;
-                lastname = textBox_lastname.Text;
-                if (!checkTextAsCharater(firstname))
-                {
-                    MessageBox.Show("Invalid first name!");
-                    return;
-                }
-                if (middlename.Length != 0)
-                {
-                    if (!checkTextAsCharater(middlename))
-                    {
-                        MessageBox.Show("Invalid middle name!");
-                        return;
-                    }
-                }
-                if (!checkTextAsCharater(lastname))
-                {
-                    MessageBox.Show("Invalid last name!");
-                    return;
-                }
-            }
-            else
-            {
-                companyname = textBox_companyname.Text;
-                if (!checkTextAsCharater(companyname))
-                {
-                    MessageBox.Show("Invalid company name!");
-                    return;
-                }
-            }
-            if (db_connect.OpenConnection())
-            {
-                string mysql_cmd;
-                MySqlCommand cmd;
-                if (usertype == "personal")
-                {
-                    mysql_cmd = "INSERT INTO `gowaredb`.`client` (`usertype`, `username`, `password`, `email`, `firstname`, `middlename`, `lastname`, `sex`) "
-                        + "VALUES ('personal', @username, @password, @email, @firstname, @middlename, @lastname, @sex);";
-                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                    cmd.Parameters.AddWithValue("@firstname", firstname);
-                    cmd.Parameters.AddWithValue("@middlename", middlename);
-                    cmd.Parameters.AddWithValue("@lastname", lastname);
-                    cmd.Parameters.AddWithValue("@sex", sex);
-                }
-                else
-                {
-                    mysql_cmd = "INSERT INTO `gowaredb`.`client` (`usertype`, `username`, `password`, `email`, `companyname`) "
-                        + "VALUES ('corporate', @username, @password, @email, @companyname);";
-                    cmd = new MySqlCommand(mysql_cmd, db_connect.Connection);
-                    cmd.Parameters.AddWithValue("@companyname", companyname);
-                }
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@password", password);
-                cmd.Parameters.AddWithValue("@email", email);
-                if (cmd.ExecuteNonQuery() > 0)
-                {
-                    MessageBox.Show("Registered Successfully!");
-                    this.Close();
-                }
-            }
-            else
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-            if (!db_connect.CloseConnection())
-            {
-                MessageBox.Show(db_connect.Message);
-            }
-        }
-
-        private void groupBox_both_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
-        private void groupBox_corporate_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
-        private void groupBox_personal_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
-        private void groupBox_personal_sex_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.White);
-        }
-
     }
 }
